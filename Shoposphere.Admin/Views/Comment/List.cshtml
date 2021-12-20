@@ -1,0 +1,109 @@
+﻿@model IEnumerable<Shoposphere.Admin.Models.CommentViewModel>
+
+@{
+    ViewData["Title"] = "List";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@if (TempData["Message"] != null)
+{
+    <div class="alert alert-info">
+        @TempData["Message"]
+    </div>
+}
+
+<div class="row">
+    <div class="col-6"><h2>Comment List</h2></div>
+</div>
+<table class="table table-bordered">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Content)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.FirstName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.LastName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ProductName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.OrderId)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.IsPublished)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Content)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.FirstName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.LastName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ProductName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.OrderId)
+                </td>
+                @*<td>
+                        @Html.DisplayFor(modelItem => item.IsPublished)
+                    </td>*@
+                <!-- #region Serdarın Formu -->
+                @*<td>
+                        <div class="form-group">
+                            <div class="col-md-10">
+                                <div class="checkbox">
+                                    @Html.EditorFor(model => item.IsPublished)
+                                    @Html.ValidationMessageFor(model => item.IsPublished, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+                            <input type="submit" value="Save" />
+                        </div>
+                    </td>*@
+
+                <!-- #endregion -->
+
+                <td>
+                    <form asp-action="Edit" asp-controller="Comment" method="post" asp-antiforgery="true">
+                        <input class="form-check-input" name="IsPublished" asp-for="@(Model.IsPublished)" /> @Html.DisplayNameFor(model => model.IsPublished)
+                    
+                    </form>
+                </td>
+                <td>
+                    @*@Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })*@
+                </td>
+
+
+
+                <!-- #region Çiğdemin formu -->
+                @*<form asp-action="Edit" asp-controller="Comment" method="post" asp-antiforgery="true">
+                        <div class="form-group form-check">
+                            <label class="form-check-label">
+                                @foreach (var comment in Model)
+                                {
+                                    <input class="form-check-input" asp-for="IsPublished" /> @Html.DisplayNameFor(model => model.IsPublished)
+                                }
+
+                            </label>
+                        </div>
+                    </form>*@
+                <!-- #endregion -->
+
+
+            </tr>
+        }
+    </tbody>
+</table>
