@@ -76,15 +76,15 @@
 
                 <!-- #endregion -->
 
-                <td>
+                @*<td>
                     <form asp-action="Edit" asp-controller="Comment" method="post" asp-antiforgery="true">
                         <input class="form-check-input" name="IsPublished" asp-for="@(Model.IsPublished)" /> @Html.DisplayNameFor(model => model.IsPublished)
                     
                     </form>
-                </td>
-                <td>
-                    @*@Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })*@
-                </td>
+                </td>*@
+                @*<td>
+                    @Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })
+                </td>*@
 
 
 
