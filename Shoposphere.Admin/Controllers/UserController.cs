@@ -29,7 +29,7 @@ namespace Shoposphere.Admin.Controllers
                  Email = x.Email,
                  Password = x.Password,
                  RoleId = x.RoleId, 
-                 UserRole = x.UserRole,
+                 UserRole = x.Role.UserRole,
              }).ToList();
 
             return View(users);
@@ -56,7 +56,7 @@ namespace Shoposphere.Admin.Controllers
                 FirstName = model.FirstName,
                 LastName = model.LastName,
                 RoleId = 1,
-                UserRole= UserRole.Admin,
+                // UserRole= UserRole.Admin,
                 BirthDate = model.BirthDate,
                 CreatedDate = DateTime.Now,
                 Email = model.Email,

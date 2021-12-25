@@ -26,16 +26,14 @@ namespace Shoposphere.Data.Entities
 
         public DateTime BirthDate { get; set; }
 
-        
-
         #region Relations
         public List<Comment> Comments { get; set; }
 
         public List<Order> Orders { get; set; }
 
-        public UserRole UserRole { get; set; }
         public int RoleId { get; set; }
         public Role Role { get; set; }
+        // public UserRole UserRole { get; set; } // silinecek gereksiz.
 
         #endregion
 

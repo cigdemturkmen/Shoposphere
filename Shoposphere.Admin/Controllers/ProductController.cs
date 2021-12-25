@@ -6,7 +6,9 @@ using Shoposphere.Data.Entities;
 using Shoposphere.Services.Interfaces;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
 
 namespace Shoposphere.Admin.Controllers
@@ -25,8 +27,7 @@ namespace Shoposphere.Admin.Controllers
 
         public IActionResult List(int? id)
         {
-            var products = _productRepository.GetAll(include: x => x.Include(y => y.Category).Include(y => y.Supplier))
-                .Where(x => x.IsActive); // isactive getall'ın içine alınacak
+            var products = _productRepository.GetAll(x => x.IsActive, include: x => x.Include(y => y.Category).Include(y => y.Supplier));
 
             if (id != null)
             {
@@ -41,20 +42,78 @@ namespace Shoposphere.Admin.Controllers
                 UnitsInStock = x.UnitsInStock,
                 ReorderLevel = x.ReorderLevel,
                 Discontinued = x.Discontinued,
-                //CategoryId = x.CategoryId,
+                CategoryId = x.CategoryId,
                 CategoryName = x.Category.CategoryName,
-                //SupplierId = x.SupplierId,
-                SupplierName = x.Supplier.SupplierName,
+                SupplierId = x.SupplierId,
+                SupplierName = x.Supplier.SupplierName, 
+                PictureStr = Convert.ToBase64String(x.Picture),
             }).ToList();
 
             return View(vm);
         }
 
-        //public IActionResult Detail(int id)
-        //{
-        //    var product = _productRepository.Get(x => x.Id == id)
-        //    return View();
-        //}
+        public IActionResult Detail(int id)
+        {
+           // var product = _productRepository.Get(x => x.IsActive && x.Id == id );
+
+            var product = _productRepository.Get(x => x.Id == id && x.IsActive, include: x => x.Include(y => y.Category).Include(y => y.Supplier));
+
+            if (product != null)
+            {
+                var vm = new ProductViewModel()
+                {
+                    Id = product.Id,
+                    ProductName = product.ProductName,
+                    UnitPrice = product.UnitPrice,
+                    CategoryId = product.CategoryId,
+                    CategoryName = product.Category.CategoryName,
+                    PictureStr = Convert.ToBase64String(product.Picture),
+                };
+                return View(vm);
+            }
+
+            return RedirectToAction("Shop");
+        }
+
+        public IActionResult Shop(int? id)
+        {
+            var products = _productRepository.GetAll(x => x.IsActive, include: x => x.Include(y => y.Category).Include(y => y.Supplier));
+            var categories = _categoryRepository.GetAll(x => x.IsActive).Select(x =>
+            new CategoryViewModel()
+            {
+                Id = x.Id,
+                CategoryName = x.CategoryName,
+                CategoryDescription = x.CategoryDescription,    
+                PictureStr = Convert.ToBase64String(x.Picture),
+            }).ToList();
+
+            if (id != null)
+            {
+                products = _productRepository.GetAll(x => x.IsActive && x.CategoryId == id);
+            }
+
+            var vm = products.Select(x => new ProductViewModel()
+            {
+                Id = x.Id,
+                ProductName = x.ProductName,
+                UnitPrice = x.UnitPrice,
+                UnitsInStock = x.UnitsInStock,
+                ReorderLevel = x.ReorderLevel,
+                Discontinued = x.Discontinued,
+                CategoryId = x.CategoryId,
+                CategoryName = x.Category.CategoryName,
+                SupplierId = x.SupplierId,
+                SupplierName = x.Supplier.SupplierName,
+                PictureStr = Convert.ToBase64String(x.Picture),
+               
+            }).ToList();
+
+
+            ViewBag.Categories = categories;
+            return View(vm);
+        }
+
+        
 
         public IActionResult Add()
         {
@@ -64,34 +123,13 @@ namespace Shoposphere.Admin.Controllers
                 Value = x.Id.ToString(),
             }).ToList();
 
-          
-
             ViewBag.Suppliers = _supplierRepository.GetAll(x => x.IsActive).Select(x => new SelectListItem()
             {
                 Text = x.SupplierName,
                 Value = x.Id.ToString()
-                
             }).ToList();
 
-            
-
-            //ViewBag.Categories = _categoryRepository.GetAll(x => x.IsActive)
-            //        .Select(x => new SelectListItem()
-            //        {
-            //            Text = x.CategoryName,
-            //            Value = x.Id.ToString()
-            //        })
-            //        .ToList();
-
-            //ViewBag.Categories = _supplierRepository.GetAll(x => x.IsActive)
-            //        .Select(x => new SelectListItem()
-            //        {
-            //            Text = x.SupplierName,
-            //            Value = x.Id.ToString()
-            //        })
-            //        .ToList();
-
-            return View("Add");
+            return View();
         }
 
         [HttpPost]
@@ -140,13 +178,30 @@ namespace Shoposphere.Admin.Controllers
                 CategoryId = model.CategoryId,
                 SupplierId = model.SupplierId,
                 IsActive = true,
+
+                
             };
 
-            bool result;
-            int currentUserId = GetCurrentUserId();
+            if (model.Picture != null && model.Picture.Length > 0 )
+            {
+                using (var memoryStream = new MemoryStream())
+                {
+                    model.Picture.CopyTo(memoryStream);
+                    var fileByteArray = memoryStream.ToArray();
 
+                    entity.Picture = fileByteArray;
+                }
+            }
+            else
+            {
+                TempData["Message"] = "Please upload product picture";
+                return View(model);
+            }
+
+            int currentUserId = GetCurrentUserId();
             entity.CreatedById = currentUserId;
-            result = _productRepository.Add(entity);
+
+            var result = _productRepository.Add(entity);
 
             if (result)
             {
@@ -165,15 +220,16 @@ namespace Shoposphere.Admin.Controllers
                 var vm = new ProductViewModel()
                 {
                     Id = product.Id,
-                    ProductName = product.ProductName,
-                    SupplierName = product.Supplier.SupplierName,
+                    
                     CategoryName = product.Category.CategoryName,
                     Isactive = product.IsActive,
                     UnitsInStock = product.UnitsInStock,
                     UnitPrice = product.UnitPrice,
                     ReorderLevel = product.ReorderLevel,
                     Discontinued = product.Discontinued,
+                    PictureStr = Convert.ToBase64String(product.Picture),
                 };
+
                 ViewBag.Categories = _categoryRepository.GetAll(x => x.IsActive).Select(x => new SelectListItem()
                 {
                     Text = x.CategoryName,
@@ -186,12 +242,14 @@ namespace Shoposphere.Admin.Controllers
                     Value = x.Id.ToString()
 
                 }).ToList();
+
+                vm.ProductName = product.ProductName;
+                vm.SupplierName = product.Supplier.SupplierName;
                 return View(vm);
             }
 
             TempData["Message"] = "Product cannot be found!";
             return View("List");
-            
         }
 
         [HttpPost]
@@ -210,8 +268,8 @@ namespace Shoposphere.Admin.Controllers
                 {
                     Text = x.SupplierName,
                     Value = x.Id.ToString()
-
                 }).ToList();
+
                 return View(model);
             }
 
@@ -225,7 +283,6 @@ namespace Shoposphere.Admin.Controllers
             {
                 Text = x.SupplierName,
                 Value = x.Id.ToString()
-
             }).ToList();
 
             int currentUserId = GetCurrentUserId();
@@ -242,12 +299,33 @@ namespace Shoposphere.Admin.Controllers
                 UpdatedById = currentUserId,
                 UpdatedDate = DateTime.Now,
                 IsActive = model.Isactive,
-
             };
 
-            bool result;
+            if (model.Picture == null)
+            {
+                byte[] picture = Encoding.ASCII.GetBytes(model.PictureStr);
+                entity.Picture = picture;
+            }
+            else
+            {
+                if (model.Picture.Length > 0)
+                {
+                    using (var memoryStream = new MemoryStream())
+                    {
+                        model.Picture.CopyTo(memoryStream);
+                        var fileByteArray = memoryStream.ToArray();
 
-            result = _productRepository.Edit(entity);
+                        entity.Picture = fileByteArray;
+                    }
+                }
+                else
+                {
+                    TempData["Message"] = "You cannot upload empty file";
+                }
+            }
+            
+
+            var result = _productRepository.Edit(entity);
 
             if (result)
             {
@@ -262,7 +340,7 @@ namespace Shoposphere.Admin.Controllers
         {
             var result = _productRepository.Delete(id);
 
-            TempData["Message"] = result ? "" : "Silme yapılamadı.";
+            TempData["Message"] = result ? "Deleted" : "Delete failed";
             return RedirectToAction("List");
         }
     }

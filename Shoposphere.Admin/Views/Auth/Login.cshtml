@@ -1,0 +1,133 @@
+﻿@model LoginViewModel
+
+@{
+    ViewData["Title"] = "Login";
+    Layout = "~/Views/Shared/_LayoutLogin.cshtml";
+}
+
+@section linksOrStyle{
+    <style>
+
+        #hide1 {
+            display: none;
+        }
+        .eye {
+            position:absolute;
+        }
+
+    </style>
+}
+
+@if (ViewBag.Message != null)
+{
+    <div class="alert alert-info">
+        @ViewBag.Message
+    </div>
+}
+
+<!-- #region Alternative Theme -->
+@*<div class="col-lg-8 col-xlg-9 col-md-7">
+        <div class="card">
+            <div class="card-body">
+                <div class="text-center">
+                    <h1 class="h4 text-gray-900 mb-4">Welcome Back!</h1>
+                </div>
+                <form class="form-horizontal form-material mx-2" asp-controller="auth" asp-action="login" method="post" asp-antiforgery="true">
+                    <div class="form-group">
+                        <label class="col-md-12">Email</label>
+                        <div class="col-md-12">
+                            <input asp-for="Email" type="email" placeholder="johnathan@admin.com"
+                                   class="form-control ps-0 form-control-line">
+                            <span asp-validation-for="Email" class="text-danger"></span>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-md-12 mb-0">Password</label>
+                        <div class="col-md-12">
+                            <input id="password" asp-for="Password" type="password" placeholder="Password"
+                                   class="form-control ps-0 form-control-line">
+                            <span class="eye" onclick="myFunction()">
+                                <i class="bi bi-eye" id="hide1"></i>
+                                <i class="bi bi-eye-slash" id="hide2"></i>
+                            </span>
+                            <span asp-validation-for="Password" class="text-danger"></span>
+                        </div>
+
+                    </div>
+
+                    <div class="form-group">
+                        <div class="col-sm-12 d-flex">
+                            <button type="submit" class="btn btn-success mx-auto mx-md-0 text-white btn-block">
+                                Login
+                            </button>
+                        </div>
+                    </div>
+                </form>
+                <hr>
+                <div class="text-center">
+                    <a class="small" href="/auth/register">Create an Account!</a>
+                </div>
+            </div>
+        </div>
+    </div>*@
+
+<!-- #endregion -->
+
+
+<form class="login100-form validate-form" asp-controller="auth" asp-action="login" method="post" asp-antiforgery="true">
+    <span class="login100-form-title p-b-37">
+        Login
+    </span>
+
+    <div class="wrap-input100 validate-input m-b-20">
+        <input class="input100" asp-for="Email" type="email" placeholder="email">
+        <span class="focus-input100"></span>
+        <span asp-validation-for="Email" class="text-danger"></span>
+    </div>
+
+    <div class="wrap-input100 validate-input m-b-25">
+        <input id="password" class="input100" asp-for="Password" type="password" placeholder="password">
+        <span class="eye" onclick="myFunction()">
+            <i class="bi bi-eye" id="hide1"></i>
+            <i class="bi bi-eye-slash" id="hide2"></i>
+        </span>
+        <span class="focus-input100"></span>
+        <span asp-validation-for="Password" class="text-danger"></span>
+    </div>
+
+    <div class="container-login100-form-btn">
+        <button type="submit" class="login100-form-btn">
+            Login
+        </button>
+    </div>
+    <hr />
+
+    <div class="text-center">
+        <a href="/auth/register" class="txt2 hov1">
+            Register Now!
+        </a>
+    </div>
+</form>
+
+
+
+@section scripts{
+    <script>
+        function myFunction() {
+            var x = document.getElementById("password");
+            var y = document.getElementById("hide1");
+            var z = document.getElementById("hide2");
+
+            if (x.type == 'password') {
+                x.type = "text";
+                y.style.display = "block";
+                z.style.display = "none";
+            }
+            else {
+                x.type = "password";
+                y.style.display = "none";
+                z.style.display = "block";
+            }
+        }
+    </script>
+}

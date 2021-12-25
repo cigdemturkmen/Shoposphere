@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -35,6 +36,20 @@ namespace Shoposphere.Admin
             services.AddScoped<IRepository<Supplier>, EFRepository<Supplier>>();
             services.AddScoped<IRepository<User>, EFRepository<User>>();
 
+            services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+                .AddCookie(option =>
+                {
+                    option.LoginPath = "/auth/login";
+                    option.ExpireTimeSpan = TimeSpan.FromHours(1);
+                });
+
+            // Session için burayý ekledim
+            services.AddDistributedMemoryCache();
+            services.AddSession(options => {
+                options.IdleTimeout = TimeSpan.FromMinutes(60);//You can set Time   
+            });
+            //services.AddMvc(); bunu silebilirsin.
+
             services.AddControllersWithViews();
         }
 
@@ -54,6 +69,10 @@ namespace Shoposphere.Admin
 
             app.UseHttpsRedirection();
 
+            app.UseStaticFiles();
+
+            app.UseSession();
+
             app.UseRouting();
 
             app.UseAuthentication();
@@ -69,7 +88,7 @@ namespace Shoposphere.Admin
                      );
             });
 
-            app.UseStaticFiles();
+            
         }
     }
 }

@@ -20,13 +20,15 @@ namespace Shoposphere.Data.Entities
 
         public bool Discontinued { get; set; }
 
+        public byte[] Picture { get; set; }
+
         #region Relations
 
         public int CategoryId { get; set; }
         public Category Category { get; set; }
 
-        public int SupplierId { get; set; }
-        public Supplier Supplier { get; set; }
+        public int SupplierId { get; set; } //silinecek
+        public Supplier Supplier { get; set; } //silinecek
 
         public List<OrderDetail> OrderDetails { get; set; }
         public List <ProductSupplier> ProductSuppliers { get; set; }

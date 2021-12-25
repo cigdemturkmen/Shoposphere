@@ -1,6 +1,7 @@
 ﻿using Shoposphere.Data.Entities;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
@@ -14,6 +15,19 @@ namespace Shoposphere.Admin.Models
         public bool IsActive { get; set; }
 
         [Required]
+        [StringLength(50)]
+        [DisplayName("Name")]
+        public string FirstName { get; set; }
+
+        [Required]
+        [StringLength(50)]
+        [DisplayName("Surname")]
+        public string LastName { get; set; }
+
+        [DisplayName("Birth Date")]
+        public DateTime BirthDate { get; set; }
+
+        [Required]
         [EmailAddress]
         public string Email { get; set; }
 
@@ -22,16 +36,6 @@ namespace Shoposphere.Admin.Models
         [MaxLength(12)]
         public string Password { get; set; }
 
-        [Required]
-        [StringLength(50)]
-        public string FirstName { get; set; }
-
-        [Required]
-        [StringLength(50)]
-        public string LastName { get; set; }
-
-        public DateTime BirthDate { get; set; }
-
         #region Relations
         public List<Comment> Comments { get; set; }
 
@@ -39,6 +43,7 @@ namespace Shoposphere.Admin.Models
 
         public int RoleId { get; set; }
         public Role Role { get; set; }
+        [DisplayName("User Role")]
         public UserRole UserRole { get; set; }
 
         #endregion

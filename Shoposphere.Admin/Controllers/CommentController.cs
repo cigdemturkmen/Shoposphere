@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Shoposphere.Admin.Models;
 using Shoposphere.Data.Entities;
@@ -10,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace Shoposphere.Admin.Controllers
 {
-    public class CommentController : Controller
+    public class CommentController : BaseController
     {
         private readonly IRepository<Comment> _commentRepository;
         private readonly IRepository<Product> _productRepository;
@@ -26,52 +27,122 @@ namespace Shoposphere.Admin.Controllers
 
         public IActionResult List(int id)
         {
-            var vm = _commentRepository.GetAll(include: x => x.Include(y => y.Product).Include(z=>z.User)).Where(x=> x.Product.Id == id).Select(x => new CommentViewModel()
+            var vm = _commentRepository.GetAll(include: x => x.Include(y => y.Product).Include(z => z.User)).Where(x => x.Product.Id == id).Select(x => new CommentViewModel()
             {
-                Content=x.Content,
-                IsPublished=x.IsPublished,
-                User=x.User,
-                UserId=x.UserId,
-                FirstName=x.User.FirstName,
-                LastName=x.User.LastName,
-                ProductId=x.ProductId,
-                Product=x.Product,
-                ProductName=x.Product.ProductName,
-                Order=x.Order,
-                OrderId=x.OrderId
-                
-               
+                Content = x.Content,
+                IsPublished = x.IsPublished,
+                UserId = x.UserId,
+                FirstName = x.User.FirstName,
+                LastName = x.User.LastName,
+                ProductId = x.ProductId,
+                OrderId = x.OrderId
             }).ToList();
 
             return View(vm);
-
         }
 
-        public IActionResult Add()
+        [Authorize(Roles = "0")]
+        public IActionResult Add() // bunu sadece customer kullanabilecek.
         {
             return View();
         }
 
-        //[HttpPost]
-        //public IActionResult Add()
-        //{
-        //    return View();
-        //}
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult Add(CommentViewModel model)
+        {
+            if (!ModelState.IsValid)
+            {
+                return View(model);
+            }
 
-        //public IActionResult Edit()
-        //{
-        //    return View();
-        //}
+            var currentUserId = GetCurrentUserId();
 
-        //[HttpPost]
-        //public IActionResult Edit()
-        //{
-        //    return View();
-        //}
+            var entity = new Comment()
+            {
+                CreatedById = currentUserId,
+                CreatedDate = DateTime.Now,
+                Content = model.Content,
+                ProductId = model.ProductId,
+                OrderId = model.OrderId,
+                UserId = currentUserId,
+            };
 
-        //public IActionResult Delete()
-        //{
-        //    return View();
-        //}
+            var result = _commentRepository.Add(entity);
+
+            if (!result)
+            {
+                TempData["Message"] = "Uh oh! Something went wrong...";
+                return View("Add", model);
+            }
+
+            return View(); // TODO - burada yorum yaptıktan sonra nereye yönlendireceğiz?
+        }
+
+        [Authorize(Roles = "Customer")]
+        public ActionResult Edit(int id)
+        {
+            var comment = _commentRepository.Get(x => x.Id == id && x.IsActive && x.IsPublished);
+
+            if (comment != null)
+            {
+                var vm = new CommentViewModel()
+                {
+                    Content = comment.Content,
+                    Id = comment.Id,
+                    IsActive = comment.IsActive,
+                    IsPublished = comment.IsPublished,
+                    // buradaki Id, ispublished ve isactive edit'i yaptığımız Form'a hidden olarak eklenecek. formun yeri henüz belli değil
+                };
+
+                return View(vm);
+            }
+
+            TempData["Message"] = "Comment cannot be found!";
+            return RedirectToAction("List"); // TODO - burda listeye değil de başka bir yere yönlensin. onu sonra düşün.
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult Edit(CommentViewModel model)
+        {
+            if (!ModelState.IsValid)
+            {
+                return View("Edit", model);
+            }
+
+            var currentUserId = GetCurrentUserId();
+
+            var entity = new Comment()
+            {
+                Id = model.Id,
+                IsPublished = model.IsPublished,
+                IsActive = model.IsActive,
+                Content = model.Content,
+                UpdatedById = currentUserId,
+                UpdatedDate = DateTime.Now,
+            };
+
+
+            var result = _commentRepository.Edit(entity);
+
+            if (!result)
+            {
+                TempData["Message"] = "Uh oh! Something went wrong...";
+                return View("Edit", model);
+            }
+
+            return RedirectToAction("List"); // TODO - yorumu düzenledikten sonra nereye yönlensin?
+        }
+
+        [Authorize(Roles = "Customer")]
+        public IActionResult Delete(int id)
+        {
+            var result = _commentRepository.Delete(id);
+
+            TempData["Message"] = result ? "Yorum silindi" : "Silme yapılamadı";
+
+            return RedirectToAction("List"); // TODO - yorumu sildikten sonra nereye yönlensin?
+        }
     }
 }

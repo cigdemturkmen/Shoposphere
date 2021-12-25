@@ -14,5 +14,7 @@ namespace Shoposphere.Admin.Controllers
             var id = Convert.ToInt32(HttpContext.User?.Claims.FirstOrDefault(x => x.Type == ClaimTypes.NameIdentifier)?.Value);
             return id;
         }
+
+
     }
 }

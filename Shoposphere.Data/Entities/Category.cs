@@ -15,6 +15,8 @@ namespace Shoposphere.Data.Entities
         [StringLength(500)]
         public string CategoryDescription { get; set; }
 
+        public byte[] Picture { get; set; }
+
         #region Relations
         public List<Product> Products { get; set; } 
         #endregion

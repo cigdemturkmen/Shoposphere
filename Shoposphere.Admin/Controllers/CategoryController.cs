@@ -7,12 +7,14 @@ using Shoposphere.Data.Entities;
 using Shoposphere.Services.Interfaces;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
 
 namespace Shoposphere.Admin.Controllers
 {
-    // [Authorize(Roles = "Admin")]
+    [Authorize(Roles = "1")]
     public class CategoryController : BaseController
     {
         private readonly IRepository<Category> _categoryRepository;
@@ -30,10 +32,24 @@ namespace Shoposphere.Admin.Controllers
                 Id = x.Id,
                 CategoryName = x.CategoryName,
                 CategoryDescription = x.CategoryDescription,
-                // TODO - PictureStr = Convert.ToBase64String(x.Picture)
+                PictureStr = Convert.ToBase64String(x.Picture),
             }).ToList();
 
             return View(categories);
+        }
+
+        public PartialViewResult _SidebarPartialView()
+        {
+            var categories = _categoryRepository.GetAll(x => x.IsActive).Select(x =>
+            new CategoryViewModel()
+            {
+                Id = x.Id,
+                CategoryName = x.CategoryName,
+                CategoryDescription = x.CategoryDescription,
+                PictureStr = Convert.ToBase64String(x.Picture),
+            }).ToList();
+
+            return PartialView(categories);
         }
 
         public IActionResult Detail(int id)
@@ -105,13 +121,28 @@ namespace Shoposphere.Admin.Controllers
             {
                 CategoryName = model.CategoryName,
                 CategoryDescription = model.CategoryDescription,
+                CreatedById = currentUserId,
+                CreatedDate = DateTime.Now,
             };
 
-            bool result;
+            if (model.Picture != null && model.Picture.Length > 0)
+            {
+                using (var memoryStream = new MemoryStream())
+                {
+                    model.Picture.CopyTo(memoryStream);
+                    var fileByteArray = memoryStream.ToArray();
 
-            entity.CreatedById = currentUserId;
-            entity.CreatedDate = DateTime.Now;
-            result = _categoryRepository.Add(entity);
+                    entity.Picture = fileByteArray;
+                }
+            }
+            else
+            {
+                TempData["Message"] = "Please upload category picture";
+                return View(model);
+            }
+
+
+            var result = _categoryRepository.Add(entity);
 
             if (result)
             {
@@ -124,7 +155,7 @@ namespace Shoposphere.Admin.Controllers
 
         public ActionResult Edit(int id)
         {
-            var category = _categoryRepository.Get(x => x.Id == id && x.IsActive == true);
+            var category = _categoryRepository.Get(x => x.Id == id && x.IsActive);
 
             if (category != null)
             {
@@ -132,8 +163,9 @@ namespace Shoposphere.Admin.Controllers
                 {
                     Id = category.Id,
                     CategoryName = category.CategoryName,
-                    CategoryDescription = category.CategoryDescription,  
+                    CategoryDescription = category.CategoryDescription,
                     IsActive = category.IsActive,
+                    PictureStr = Convert.ToBase64String(category.Picture),
                 };
 
                 return View(vm);
@@ -161,12 +193,33 @@ namespace Shoposphere.Admin.Controllers
                 CategoryDescription = model.CategoryDescription,
                 IsActive = model.IsActive,
                 UpdatedById = currentUserId,
-                UpdatedDate = DateTime.Now
+                UpdatedDate = DateTime.Now,
             };
 
-            bool result;
+            if (model.Picture == null)
+            {
+                byte[] picture = Encoding.ASCII.GetBytes(model.PictureStr);
+                entity.Picture = picture;
+            }
+            else
+            {
+                if (model.Picture.Length > 0)
+                {
+                    using (var memoryStream = new MemoryStream())
+                    {
+                        model.Picture.CopyTo(memoryStream);
+                        var fileByteArray = memoryStream.ToArray();
 
-            result = _categoryRepository.Edit(entity);
+                        entity.Picture = fileByteArray;
+                    }
+                }
+                else
+                {
+                    TempData["Message"] = "Please upload category picture";
+                }
+            }
+
+            var result = _categoryRepository.Edit(entity);
 
             if (result)
             {
@@ -181,11 +234,9 @@ namespace Shoposphere.Admin.Controllers
         {
             var result = _categoryRepository.Delete(id);
 
-            TempData["Message"] = result ? "" : "Silme yapılamadı";
+            TempData["Message"] = result ? "Deleted" : "Delete failed";
 
             return RedirectToAction("List");
         }
-
-
     }
 }

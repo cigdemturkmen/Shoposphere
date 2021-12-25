@@ -15,7 +15,7 @@ namespace Shoposphere.Admin.Models
 
 
         [Required]
-        [StringLength(12, MinimumLength = 4)]
+        [StringLength(12, MinimumLength = 3)]
         public string Password { get; set; }
 
         public bool RememberMe { get; set; }

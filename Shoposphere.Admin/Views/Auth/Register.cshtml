@@ -1,0 +1,140 @@
+﻿@model RegisterViewModel
+@{
+    ViewData["Title"] = "Register";
+    Layout = "~/Views/Shared/_LayoutLogin.cshtml";
+}
+
+@if (TempData["Message"] != null)
+{
+    <div class="alert alert-info">
+        @TempData["Message"]
+    </div>
+}
+
+<!-- #region Alternative Theme -->
+
+@*<div class="col-lg-8 col-xlg-9 col-md-7">
+    <div class="card">
+        <div class="card-body">
+            <div class="text-center">
+                <h1 class="h4 text-gray-900 mb-4">Register</h1>
+            </div>
+            <form class="form-horizontal form-material mx-2" asp-controller="auth" asp-action="register" method="post" asp-antiforgery="true">
+                <div class="form-group">
+                    <label class="col-md-12 mb-0">First Name</label>
+                    <div class="col-md-12">
+                        <input asp-for="Firstname" type="text" placeholder="Jane"
+                               class="form-control ps-0 form-control-line">
+                        <span asp-validation-for="Firstname" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-md-12 mb-0">Last Name</label>
+                    <div class="col-md-12">
+                        <input asp-for="Lastname" type="text" placeholder="Doe"
+                               class="form-control ps-0 form-control-line">
+                        <span asp-validation-for="Lastname" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-md-12 mb-0">Birth Date</label>
+                    <div class="col-md-12">
+                        <input asp-for="BirthDate" type="date" placeholder="dd.mm.yyyy"
+                               class="form-control ps-0 form-control-line">
+                        <span asp-validation-for="BirthDate" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-md-12">Email</label>
+                    <div class="col-md-12">
+                        <input asp-for="Email" type="email" placeholder="johnathan@admin.com"
+                               class="form-control ps-0 form-control-line"
+                               id="example-email">
+                        <span asp-validation-for="Email" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-md-12 mb-0">Password</label>
+                    <div class="col-md-12">
+                        <input asp-for="Password" type="password" placeholder="Password"
+                               class="form-control ps-0 form-control-line">
+                        <span asp-validation-for="Password" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-md-12 mb-0">Password Confirm</label>
+                    <div class="col-md-12">
+                        <input asp-for="PasswordConfirm" type="password" placeholder="Password"
+                               class="form-control ps-0 form-control-line">
+                        <span asp-validation-for="PasswordConfirm" class="text-danger"></span>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <div class="col-sm-12 d-flex">
+                        <button type="submit" class="btn btn-success mx-auto mx-md-0 text-white btn-block">
+                            Register
+                        </button>
+                    </div>
+                </div>
+            </form>
+            <hr>
+            <div class="text-center">
+                <a class="small" href="/auth/login">Login here</a>
+            </div>
+        </div>
+    </div>
+</div>*@
+
+<!-- #endregion -->
+
+
+<form class="login100-form validate-form" asp-controller="auth" asp-action="register" method="post" asp-antiforgery="true">
+    <span class="login100-form-title p-b-37">
+        Register
+    </span>
+    <div class="wrap-input100 validate-input m-b-20">
+        <input class="input100" asp-for="Firstname" type="text" placeholder="name">
+        <span class="focus-input100"></span>
+        <span asp-validation-for="Firstname" class="text-danger"></span>
+    </div>
+    <div class="wrap-input100 validate-input m-b-20">
+        <input class="input100" asp-for="Lastname" type="text" placeholder="surname">
+        <span class="focus-input100"></span>
+        <span asp-validation-for="Lastname" class="text-danger"></span>
+    </div>
+    <div class="wrap-input100 validate-input m-b-20">
+        <input class="input100" asp-for="BirthDate" type="date" placeholder="birthdate">
+        <span class="focus-input100"></span>
+        <span asp-validation-for="BirthDate" class="text-danger"></span>
+    </div>
+
+    <div class="wrap-input100 validate-input m-b-20">
+        <input class="input100" asp-for="Email" type="email" placeholder="email">
+        <span class="focus-input100"></span>
+        <span asp-validation-for="Email" class="text-danger"></span>
+    </div>
+
+    <div class="wrap-input100 validate-input m-b-25">
+        <input id="password" class="input100" asp-for="Password" type="password" placeholder="password">
+        <span class="focus-input100"></span>
+        <span asp-validation-for="Password" class="text-danger"></span>
+    </div>
+    <div class="wrap-input100 validate-input m-b-25">
+        <input id="password" class="input100" asp-for="PasswordConfirm" type="password" placeholder="confirm password">
+        <span class="focus-input100"></span>
+        <span asp-validation-for="PasswordConfirm" class="text-danger"></span>
+    </div>
+    <div class="container-login100-form-btn">
+        <button type="submit" class="login100-form-btn">
+            Register
+        </button>
+    </div>
+    <hr />
+
+    <div class="text-center">
+        <a href="/auth/login" class="txt2 hov1">
+            Login here
+        </a>
+    </div>
+</form>

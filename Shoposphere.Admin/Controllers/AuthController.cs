@@ -42,7 +42,10 @@ namespace Shoposphere.Admin.Controllers
                 Password = model.Password,
                 BirthDate = model.BirthDate,
                 CreatedById = -1,
-                UserRole = UserRole.Customer,
+                CreatedDate = DateTime.Now,
+                RoleId = 2,
+                // role default 0 = customer
+                
             };
 
             var result = _userRepository.Add(user);
@@ -87,8 +90,9 @@ namespace Shoposphere.Admin.Controllers
                     new Claim(ClaimTypes.Name,user.FirstName),
                     new Claim(ClaimTypes.Surname, user.LastName),
                     new Claim(ClaimTypes.Email, user.Email),
+                    //new Claim(ClaimTypes.DateOfBirth, user.BirthDate),
                     new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
-                    new Claim(ClaimTypes.Role,user.UserRole.ToString())
+                    new Claim(ClaimTypes.Role,user.RoleId.ToString())
                 };
 
                 ClaimsIdentity claimsIdentity = new ClaimsIdentity(claims, "login");
