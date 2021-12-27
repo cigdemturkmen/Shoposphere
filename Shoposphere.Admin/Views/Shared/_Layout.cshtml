@@ -68,19 +68,9 @@
                         <!-- Logo -->
                         <!-- ============================================================== -->
                         <a class="navbar-brand ms-4" href="/home/index">
-                            <!-- Logo icon -->
-                            <b class="logo-icon">
-                                <!--You can put here icon as well // <i class="wi wi-sunset"></i> //-->
-                                <!-- Dark Logo icon -->
-                                <img src="~/assets/images/logo-light-icon.png" alt="homepage" class="dark-logo" />
-
-                            </b>
-                            <!--End Logo icon -->
-                            <!-- Logo text -->
                             <span class="logo-text">
                                 <!-- dark Logo text -->
-                                <img src="~/assets/images/logo-light-text.png" alt="homepage" class="dark-logo" />
-
+                                <p><h3>Shop<img style="width:20%" src="~/assets/images/planet3.png" alt="homepage" class="dark-logo" />sphere</h3></p>
                             </span>
                         </a>
                         <!-- ============================================================== -->
@@ -127,10 +117,10 @@
                             <!-- ============================================================== -->
                             <li class="nav-item dropdown">
                                 <a class="nav-link dropdown-toggle text-muted waves-effect waves-dark" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                    <img src="~/assets/images/users/1.jpg" alt="user" class="profile-pic me-2">@(firstname +" "+ lastname)
+                                    @*<img src="~/assets/images/users/1.jpg" alt="user" class="profile-pic me-2">*@@(firstname +" "+ lastname)
                                 </a>
                                 <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                                    <li><a class="dropdown-item " href="#">Profile Settings</a></li>
+                                    @*<li><a class="dropdown-item " href="#">Profile Settings</a></li>*@
                                     <li><a class="dropdown-item" href="/auth/logout">Logout</a></li>
                                 </ul>
                             </li>
@@ -242,7 +232,7 @@
                                 <nav aria-label="breadcrumb">
                                     <ol class="breadcrumb">
                                         <li class="breadcrumb-item"><a href="#">Home</a></li>
-                                        <li class="breadcrumb-item active" aria-current="page">Blank Page</li>
+                                        <li class="breadcrumb-item active" aria-current="page">@ViewData["Title"]</li>
                                     </ol>
                                 </nav>
                             </div>
@@ -327,7 +317,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
         <!-- The above 4 meta tags *must* come first in the head; any other head content must come *after* these tags -->
         <!-- Title  -->
-        <title>Shoposphere - Ecommerce | Home</title>
+        <title>Shoposphere | @ViewData["Title"]</title>
 
         <!-- Favicon  -->
         <link rel="icon" href="~/assets/images/favicon.ico">
@@ -366,7 +356,7 @@
             <div class="mobile-nav">
                 <!-- Navbar Brand -->
                 <div class="amado-navbar-brand">
-                    <a href="index.html"><img src="img/core-img/logo.png" alt=""></a>
+                    <p>Shop<a href="/home/index"><img src="~/assets/images/planet1.png" alt=""></a>sphere</p> 
                 </div>
                 <!-- Navbar Toggler -->
                 <div class="amado-navbar-toggler">
@@ -382,7 +372,8 @@
                 </div>
                 <!-- Logo -->
                 <div class="logo">
-                    <a href="index.html"><img src="img/core-img/logo.png" alt=""></a>
+                    <h3><b>Shop<a href="/home/index"><img style="width:20%" src="~/assets/images/planet1.png" alt=""></a>sphere</b></h3>
+                    
                 </div>
                 <!-- Amado Nav -->
                 <nav class="amado-nav">
@@ -391,13 +382,14 @@
                         <li><a href="/product/shop">Shop</a></li>
                         <li><a href="/cart/list">Cart</a></li>
                         <li><a href="checkout.html">Checkout</a></li>
+                        <li><a href="/auth/logout">Logout</a></li>
                     </ul>
                 </nav>
                 <!-- Button Group -->
                 @*<div class="amado-btn-group mt-30 mb-100">
-                <a href="#" class="btn amado-btn mb-15">%Discount%</a>
-                <a href="#" class="btn amado-btn active">New this week</a>
-            </div>*@
+                    <a href="#" class="btn amado-btn mb-15">%Discount%</a>
+                    <a href="#" class="btn amado-btn active">New this week</a>
+                </div>*@
                 <!-- Cart Menu -->
                 <div class="cart-fav-search mb-100">
                     <a href="/cart/list" class="cart-nav"><img src="~/assets/images/cart.png" alt=""> Cart <span>0@*@Model.Sum(x => x.Quantity)*@</span></a>
@@ -414,22 +406,8 @@
             </header>
             <!-- Header Area End -->
 
-            @*@Html.Partial("_SidebarPartialView")*@
-
             @RenderBody()
-            <!-- #region Single Category - Ürünler -->
-            <!--<div class="single-products-catagory clearfix">
-    <a href="shop.html">
-        <img src="img/bg-img/1.jpg" alt="">-->
-            <!-- Hover Content -->
-            <!--<div class="hover-content">
-                <div class="line"></div>
-                <p>From $180</p>
-                <h4>Modern Chair</h4>
-            </div>
-        </a>
-    </div>-->
-            <!-- #endregion -->
+           
 
         </div>
         <!-- ##### Main Content Wrapper End ##### -->
@@ -508,14 +486,13 @@
             </div>
         </footer>
         <!-- ##### Footer Area End ##### -->
-
         <!-- ##### jQuery (Necessary for All JavaScript Plugins) ##### -->
-        @*<script src="js/jquery/jquery-2.2.4.min.js"></script>*@
-        <script src="~/vendor/jquery-3.2.1.min.js"></script>
+        <script src="~/js/jquery-2.2.4.min.js"></script>
+        @*<script src="~/vendor/jquery-3.2.1.min.js"></script>*@
         <script src="~/js/jquery.validate.min.js"></script>
         <script src="~/js/jquery.validate.unobtrusive.min.js"></script>
         <script src="~/vendor/popper.min.js"></script>
-        <script src="~/vendor/bootstrap.min.js"></script>
+        <script src="~/js/bootstrap.min.js"></script>
         <script src="~/js/plugins.js"></script>
         <script src="~/js/active.js"></script>
 

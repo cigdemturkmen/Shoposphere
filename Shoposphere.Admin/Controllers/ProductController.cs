@@ -18,16 +18,19 @@ namespace Shoposphere.Admin.Controllers
         private readonly IRepository<Product> _productRepository;
         private readonly IRepository<Category> _categoryRepository;
         private readonly IRepository<Supplier> _supplierRepository;
+
         public ProductController(IRepository<Product> productRepository, IRepository<Category> categoryRepository, IRepository<Supplier> supplierRepository)
         {
             _productRepository = productRepository;
             _categoryRepository = categoryRepository;
             _supplierRepository = supplierRepository;
+
         }
 
         public IActionResult List(int? id)
         {
             var products = _productRepository.GetAll(x => x.IsActive, include: x => x.Include(y => y.Category).Include(y => y.Supplier));
+
 
             if (id != null)
             {
@@ -68,6 +71,7 @@ namespace Shoposphere.Admin.Controllers
                     CategoryId = product.CategoryId,
                     CategoryName = product.Category.CategoryName,
                     PictureStr = Convert.ToBase64String(product.Picture),
+                    Supplier = product.Supplier,
                 };
                 return View(vm);
             }
@@ -78,6 +82,8 @@ namespace Shoposphere.Admin.Controllers
         public IActionResult Shop(int? id)
         {
             var products = _productRepository.GetAll(x => x.IsActive, include: x => x.Include(y => y.Category).Include(y => y.Supplier));
+     
+
             var categories = _categoryRepository.GetAll(x => x.IsActive).Select(x =>
             new CategoryViewModel()
             {

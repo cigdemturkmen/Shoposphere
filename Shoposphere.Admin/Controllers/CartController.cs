@@ -20,74 +20,104 @@ namespace Shoposphere.Admin.Controllers
             _productRepository = productRepository;
         }
 
-        const string SessionShopCart = "_sessionShopCart";
-        List<CartItem> cartItemList = new List<CartItem>();
+        const string SessionShopCart = "";
+
+        public IActionResult List()
+        {
+            var cartItemList = new List<CartItem>();
+            var sessionCart = HttpContext.Session.GetString("SessionShopCart");
+
+            if (sessionCart != null)
+            {
+                cartItemList = JsonConvert.DeserializeObject<List<CartItem>>(sessionCart);
+            }
+
+            return View(cartItemList);
+        }
 
         #region Resources (Sessions in net core)
+
+        // learningprogramming.net/net/asp-net-core-mvc-5/build-shopping-cart-with-session-in-asp-net-core-mvc-5/
+
         // c-sharpcorner.com/article/how-to-use-session-in-asp-net-core/
 
         // medium.com/@fadilzeybek/net-core-session-kullan%C4%B1m%C4%B1-b6f187c34eb0
+
         #endregion
         public IActionResult Add(int id)
         {
-            
-            HttpContext.Session.SetString("SessionShopCart", JsonConvert.SerializeObject(cartItemList)); // Session["ShopCart] = cartItemList
-            var sessionStr = HttpContext.Session.GetString("SessionShopCart"); // converts session into string
-
-
             var product = _productRepository.Get(x => x.IsActive && x.Id == id);
+            var sessionCart = HttpContext.Session.GetString("SessionShopCart");
 
             if (product != null)
             {
-                if (sessionStr != null) // if session is not null
+                if (sessionCart == null) // if session is null, add 1 product
                 {
-                    cartItemList = JsonConvert.DeserializeObject<List<CartItem>>(sessionStr);
-                }
-
-                if (cartItemList.Any(x => x.Product.Id == id))
-                {
-                    var currentProduct = cartItemList.FirstOrDefault(x => x.Product.Id == id);
-                    currentProduct.Quantity += 1;
-                }
-                else
-                {
+                    var cartItemList = new List<CartItem>();
                     var cartItem = new CartItem()
                     {
                         Product = product,
                         Quantity = 1
                     };
 
-                    cartItemList.Add(cartItem); // adds new CartItem to the list
+                    cartItemList.Add(cartItem); // adds new CartItem to the cartItemList
+
+                    HttpContext.Session.SetString("SessionShopCart", JsonConvert.SerializeObject(cartItemList)); // set session
+
+                    // cartItemList = JsonConvert.DeserializeObject<List<CartItem>>(sessionStr);
+                }
+                else
+                {
+                    var cartItemList = JsonConvert.DeserializeObject<List<CartItem>>(HttpContext.Session.GetString("SessionShopCart"));
+
+
+                    if (cartItemList.Any(x => x.Product.Id == id))
+                    {
+                        var currentProduct = cartItemList.FirstOrDefault(x => x.Product.Id == id);
+                        currentProduct.Quantity += 1;
+                    }
+                    else
+                    {
+                        var cartItem = new CartItem()
+                        {
+                            Product = product,
+                            Quantity = 1
+                        };
+
+                        cartItemList.Add(cartItem);
+                    }
+                    HttpContext.Session.SetString("SessionShopCart", JsonConvert.SerializeObject(cartItemList));
                 }
 
-                
-                sessionStr = cartItemList.ToString(); // Session["ShopCard"] = cardItemList;
-                TempData["Session"] = sessionStr;
             }
-            
-            return RedirectToAction("List", TempData["Session"]);
+
+            return RedirectToAction("List");
         }
 
-        public IActionResult List()
+
+
+        public IActionResult Delete(int id)
         {
-            // HttpContext.Session.SetString("SessionShopCart", JsonConvert.SerializeObject(cartItemList));// Session["ShopCart] = cartItemList
+            var cartItemList = new List<CartItem>();
 
-            //var sessionStr = TempData["Session"].ToString(); 
-            var sessionStr = HttpContext.Session.GetString("SessionShopCart");
-            //var sessionStr = cartItemList.ToString();
-           
+             var sessionCart = HttpContext.Session.GetString("SessionShopCart");
 
-            if (sessionStr != null)
+            if (sessionCart != null)
             {
-                cartItemList = JsonConvert.DeserializeObject<List<CartItem>>(sessionStr);
+                cartItemList = JsonConvert.DeserializeObject<List<CartItem>>(sessionCart);
             }
 
-            return View(cartItemList);
-        }
-
-        public IActionResult Delete()
-        {
-            return View();
+            var currentProduct = cartItemList.FirstOrDefault(x => x.Product.Id == id);
+            if (currentProduct != null)
+            {
+                currentProduct.Quantity -= 1;
+                if (currentProduct.Quantity == 0)
+                {
+                    cartItemList.Remove(currentProduct);
+                }
+                HttpContext.Session.SetString("SessionShopCart", JsonConvert.SerializeObject(cartItemList));
+            }
+            return RedirectToAction("List");
         }
     }
 }

@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Shoposphere.Admin.Helpers
 {
-    public static class SessionHelper
+    public static class SessionHelper // TO BE USED LATER...
     {
         public static void SetObjectAsJson(this ISession session, string key, object value)
         {

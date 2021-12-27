@@ -29,9 +29,21 @@ namespace Shoposphere.Admin.Controllers
                  Email = x.Email,
                  Password = x.Password,
                  RoleId = x.RoleId, 
-                 UserRole = x.Role.UserRole,
+                
+                 
              }).ToList();
 
+            foreach (var user in users)
+            {
+                if (user.RoleId == 0)
+                {
+                    user.UserRole = UserRole.Customer;
+                }
+                else if (user.RoleId == 1)
+                {
+                    user.UserRole = UserRole.Admin;
+                }
+            }
             return View(users);
         }
 
@@ -82,7 +94,7 @@ namespace Shoposphere.Admin.Controllers
         {
             var user = _userRepository.Get(x => x.Id == id && x.IsActive == true);
 
-            if (user != null)
+            if (user != null && user.RoleId != 2)
             {
                 var vm = new UserViewModel()
                 {
@@ -99,7 +111,7 @@ namespace Shoposphere.Admin.Controllers
                 return View(vm);
             }
 
-            TempData["Message"] = "Category cannot be found!";
+            TempData["Message"] = "Customer information cannot be edited";
             return RedirectToAction("List");
         }
 

@@ -17,6 +17,7 @@ namespace Shoposphere.Admin.Models
                 return this.Product.UnitPrice * this.Quantity;
             }
         }
+        public string PictureStr { get; set; }
 
     }
 }

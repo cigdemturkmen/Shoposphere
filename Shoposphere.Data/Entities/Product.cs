@@ -22,16 +22,18 @@ namespace Shoposphere.Data.Entities
 
         public byte[] Picture { get; set; }
 
+        // public string Description { get; set; } //ekle
+
         #region Relations
 
         public int CategoryId { get; set; }
         public Category Category { get; set; }
 
-        public int SupplierId { get; set; } //silinecek
-        public Supplier Supplier { get; set; } //silinecek
+        public int SupplierId { get; set; }
+        public Supplier Supplier { get; set; }
 
         public List<OrderDetail> OrderDetails { get; set; }
-        public List <ProductSupplier> ProductSuppliers { get; set; }
+        public List <ProductSupplier> ProductSuppliers { get; set; } //silinecek
 
         public List<Comment> Comments { get; set; } 
         #endregion

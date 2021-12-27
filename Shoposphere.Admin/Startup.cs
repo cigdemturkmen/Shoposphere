@@ -35,6 +35,7 @@ namespace Shoposphere.Admin
             services.AddScoped<IRepository<Shipper>, EFRepository<Shipper>>();
             services.AddScoped<IRepository<Supplier>, EFRepository<Supplier>>();
             services.AddScoped<IRepository<User>, EFRepository<User>>();
+           
 
             services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
                 .AddCookie(option =>
@@ -48,7 +49,7 @@ namespace Shoposphere.Admin
             services.AddSession(options => {
                 options.IdleTimeout = TimeSpan.FromMinutes(60);//You can set Time   
             });
-            //services.AddMvc(); bunu silebilirsin.
+            //services.AddMvc(); bununla aþaðýdaki ayný mý?
 
             services.AddControllersWithViews();
         }

@@ -25,15 +25,27 @@
                         </div>
                     </div>
                     <!-- Sorting -->
+                    <!-- #region Sorting (!)) -->
+
                     @*<div class="product-sorting d-flex">
                         <div class="sort-by-date d-flex align-items-center mr-15">
                             <p>Sort by</p>
                             <form action="#" method="get">
-                                <select name="select" id="sortBydate">
+                                <select name="select" id="sortBydate" style="display:none;">
                                     <option value="value">Date</option>
                                     <option value="value">Newest</option>
                                     <option value="value">Popular</option>
                                 </select>
+                                <div class="nice-select" tabindex="0">
+                                    <span class="current">Date</span>
+                                    <ul class="list">
+                                        <li data-value="value" class="option selected focus">Date</li>
+                                        <li data-value="value" class="option">Newest</li>
+                                        <li data-value="value" class="option">Popular</li>
+                                    </ul>
+                                    ::after
+                                </div>
+
                             </form>
                         </div>
                         <div class="view-product d-flex align-items-center">
@@ -48,6 +60,8 @@
                             </form>
                         </div>
                     </div>*@
+
+                    <!-- #endregion -->
                 </div>
             </div>
         </div>
@@ -56,7 +70,7 @@
         <div class="row">
             @foreach (var item in Model)
             {
-                <div class="col-12 col-sm-6 col-md-12 col-xl-6">
+                <div class="col-12 col-sm-6 col-md-12 col-xl-6 float-left">
                     <div class="single-product-wrapper">
                         <div class="product-img">
                             <a href="/product/detail/@item.Id"><img style="width:30%" src="data:image;base64, @item.PictureStr" alt=""></a>
@@ -73,17 +87,17 @@
                                 </a>
                             </div>
                             <div class="ratings-cart text-right">
-                                    <div class="ratings">
-                                        <i class="fa fa-star" aria-hidden="true"></i>
-                                        <i class="fa fa-star" aria-hidden="true"></i>
-                                        <i class="fa fa-star" aria-hidden="true"></i>
-                                        <i class="fa fa-star" aria-hidden="true"></i>
-                                        <i class="fa fa-star" aria-hidden="true"></i>
-                                    </div>
-                                    <div class="cart">
-                                        <a href="/cart/add/@item.Id" data-toggle="tooltip" data-placement="left" title="Add to Cart"><img src="~/assets/images/cart.png" alt=""></a>
-                                    </div>
+                                <div class="ratings">
+                                    <i class="fa fa-star" aria-hidden="true"></i>
+                                    <i class="fa fa-star" aria-hidden="true"></i>
+                                    <i class="fa fa-star" aria-hidden="true"></i>
+                                    <i class="fa fa-star" aria-hidden="true"></i>
+                                    <i class="fa fa-star" aria-hidden="true"></i>
                                 </div>
+                                <div class="cart">
+                                    <a href="/cart/add/@item.Id" data-toggle="tooltip" data-placement="left" title="Add to Cart"><img src="~/assets/images/cart.png" alt=""></a>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -108,5 +122,3 @@
         </div>
     </div>
 </div>
-
-
