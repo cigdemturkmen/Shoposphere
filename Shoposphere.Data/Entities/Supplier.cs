@@ -19,7 +19,7 @@ namespace Shoposphere.Data.Entities
 
         #region Relations
         public List<Product> Products { get; set; }
-        public List<ProductSupplier> ProductSuppliers { get; set; } //silinecek
+        // public List<ProductSupplier> ProductSuppliers { get; set; } //silinecek
         #endregion
     }
 }

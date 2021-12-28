@@ -22,7 +22,7 @@ namespace Shoposphere.Data.Entities
 
         public byte[] Picture { get; set; }
 
-        // public string Description { get; set; } //ekle
+        public string Description { get; set; } //ekle
 
         #region Relations
 
@@ -33,7 +33,7 @@ namespace Shoposphere.Data.Entities
         public Supplier Supplier { get; set; }
 
         public List<OrderDetail> OrderDetails { get; set; }
-        public List <ProductSupplier> ProductSuppliers { get; set; } //silinecek
+        // public List <ProductSupplier> ProductSuppliers { get; set; } //silinecek
 
         public List<Comment> Comments { get; set; } 
         #endregion

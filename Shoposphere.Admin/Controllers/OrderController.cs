@@ -1,4 +1,7 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
+using Newtonsoft.Json;
 using Shoposphere.Admin.Models;
 using Shoposphere.Data.Entities;
 using Shoposphere.Services.Interfaces;
@@ -12,9 +15,11 @@ namespace Shoposphere.Admin.Controllers
     public class OrderController : BaseController
     {
         private readonly IRepository<Order> _orderRepository;
-        public OrderController(IRepository<Order> orderRepository)
+        private readonly IRepository<Shipper> _shipperRepository;
+        public OrderController(IRepository<Order> orderRepository, IRepository<Shipper> shipperRepositor)
         {
             _orderRepository = orderRepository;
+            _shipperRepository = shipperRepositor;
         }
 
         public IActionResult List()
@@ -42,39 +47,111 @@ namespace Shoposphere.Admin.Controllers
         //{
         //    // sepetteki ürünleri order detail olarak düzenleyerek order nesnesine ekleyerek dbye kayıt edeceğiz.
 
-        //    var cardItemList = new List<CardItem>();
+        //    var cartItemList = new List<CartItem>();
 
-        //    if (Session["ShopCard"] != null)
+        //    var sessionCart = HttpContext.Session.GetString("SessionShopCart");
+
+        //    if (sessionCart!= null)
         //    {
-        //        cardItemList = (List<CardItem>)Session["ShopCard"];
+        //        cartItemList = JsonConvert.DeserializeObject<List<CartItem>>(HttpContext.Session.GetString("SessionShopCart"));
         //    }
 
         //    var orderDetails = new List<OrderDetail>();
 
-        //    orderDetails = cardItemList.Select(x => new OrderDetail()
+        //    orderDetails = cartItemList.Select(x => new OrderDetail()
         //    {
-        //        ProductId = x.Product.Id,
+        //        ProductID = x.Product.Id,
         //        Quantity = x.Quantity,
         //        UnitPrice = x.Product.UnitPrice,
-        //        Discount = 0
+        //         Discount = 0,
+        //         Product = x.Product,
         //    }).ToList();
 
+        //    var currentUserId = GetCurrentUserId();
         //    var order = new Order()
         //    {
-        //        CreatedById = 1,
-        //        CreatedDate = DateTime.Now,
-        //        IsActive = true,
-        //        OrderDate = DateTime.Now,
-        //        UserId = 1,
-        //        OrderDetails = orderDetails
+        //        CreatedById = currentUserId,
+        //        CreatedDate = DateTime.Now, // (OrderDate)
+        //        IsActive = true, 
+        //        UserId = currentUserId,
+        //        OrderDetails = orderDetails,
         //    };
 
-        //    _db.Orders.Add(order);
+        //    var result = _orderRepository.Add(order);
 
-        //    var sonuc = _db.SaveChanges();
+        //    if (result)
+        //    {
+        //        HttpContext.Session.SetString("SessionShopCart", "");
+        //        TempData["Message"] = "Payment successful";
+        //        return RedirectToAction("Index", "Home");
+        //    }
 
-        //    return View();
+        //    return RedirectToAction("List", "Cart");
         //}
 
+        public ActionResult Checkout()
+        {
+            ViewBag.Shippers = _shipperRepository.GetAll(x => x.IsActive).Select(x => new SelectListItem()
+            {
+                Text = x.ShipperName,
+                Value = x.Id.ToString()
+            }).ToList();
+
+            ViewBag.Cart = JsonConvert.DeserializeObject<List<CartItem>>(HttpContext.Session.GetString("SessionShopCart"));
+            
+            return View();
+        }
+
+        [HttpPost]
+        public ActionResult Checkout(OrderViewModel model)
+        {
+            // sepetteki ürünleri order detail olarak düzenleyerek order nesnesine ekleyerek dbye kayıt edeceğiz.
+
+
+
+            var cartItemList = new List<CartItem>();
+
+            var sessionCart = HttpContext.Session.GetString("SessionShopCart");
+
+            if (sessionCart != null)
+            {
+                cartItemList = JsonConvert.DeserializeObject<List<CartItem>>(HttpContext.Session.GetString("SessionShopCart"));
+            }
+
+            var orderDetails = new List<OrderDetail>();
+
+            orderDetails = cartItemList.Select(x => new OrderDetail()
+            {
+                ProductID = x.Product.Id,
+                Quantity = x.Quantity,
+                UnitPrice = x.Product.UnitPrice,
+                Discount = 0,
+                Product = x.Product,
+            }).ToList();
+
+            var currentUserId = GetCurrentUserId();
+            var order = new Order()
+            {
+                CreatedById = currentUserId,
+                CreatedDate = DateTime.Now, // (OrderDate)
+                IsActive = true,
+                UserId = currentUserId,
+                OrderDetails = orderDetails,
+                ShipAddress = model.ShipAddress,  
+                ShipperId = 3,
+                
+            };
+
+            var result = _orderRepository.Add(order);
+
+            if (result)
+            {
+                HttpContext.Session.Clear(); // DONT - HttpContext.Session.SetString("SessionShopCart", "");
+                TempData["Message"] = "Payment successful";
+                return RedirectToAction("Index", "Home");
+            }
+
+            return RedirectToAction("List", "Cart");
+        }
     }
 }

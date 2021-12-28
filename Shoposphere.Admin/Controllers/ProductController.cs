@@ -120,7 +120,6 @@ namespace Shoposphere.Admin.Controllers
         }
 
         
-
         public IActionResult Add()
         {
             ViewBag.Categories = _categoryRepository.GetAll(x => x.IsActive).Select(x => new SelectListItem()
@@ -183,9 +182,7 @@ namespace Shoposphere.Admin.Controllers
                 CreatedDate = DateTime.Now,
                 CategoryId = model.CategoryId,
                 SupplierId = model.SupplierId,
-                IsActive = true,
-
-                
+                IsActive = true,  
             };
 
             if (model.Picture != null && model.Picture.Length > 0 )
@@ -226,7 +223,9 @@ namespace Shoposphere.Admin.Controllers
                 var vm = new ProductViewModel()
                 {
                     Id = product.Id,
-                    
+                    Supplier = product.Supplier,
+                    Category = product.Category,
+                    SupplierName = product.Supplier.SupplierName,
                     CategoryName = product.Category.CategoryName,
                     Isactive = product.IsActive,
                     UnitsInStock = product.UnitsInStock,

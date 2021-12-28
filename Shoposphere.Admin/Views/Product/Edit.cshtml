@@ -57,6 +57,7 @@
                     {
                         <option value="@item.Value">@item.Text</option>
                     }
+                    <option value="@Model.CategoryId" selected>@Model.Category.CategoryName</option>
                 </select>
                 <span asp-validation-for="CategoryId" class="text-danger"></span>
             </div>
@@ -68,6 +69,7 @@
                     {
                         <option value="@item.Value">@item.Text</option>
                     }
+                    <option value="@Model.SupplierId" selected>@Model.Supplier.SupplierName</option>
                 </select>
                 <span asp-validation-for="SupplierId" class="text-danger"></span>
             </div>

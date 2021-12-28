@@ -1,5 +1,5 @@
 ﻿@using System.Security.Claims;
-@*@model List<CartItem>*@
+
 @{
     Layout = null;
 
@@ -140,53 +140,58 @@
                         <ul id="sidebarnav">
                             <!-- User Profile-->
                             <li class="sidebar-item">
+                                <span class="sidebar-link waves-effect waves-dark sidebar-link">
+                                    <span class="hide-menu"></span>
+                                </span>
+                            </li>
+                            <li class="sidebar-item">
                                 <a class="sidebar-link waves-effect waves-dark sidebar-link"
                                    href="/user/list" aria-expanded="false">
-                                    <i class="mdi me-2 mdi-gauge"></i><span class="hide-menu">Users</span>
+                                    <i class="mdi me-2 mdi-face"></i><span class="hide-menu">Users</span>
                                 </a>
                             </li>
                             <li class="sidebar-item">
                                 <a class="sidebar-link waves-effect waves-dark sidebar-link"
                                    href="/category/list" aria-expanded="false">
-                                    <i class="mdi me-2 mdi-account-check"></i><span class="hide-menu">Categories</span>
+                                    <i class="mdi me-2 mdi-format-list-bulleted"></i><span class="hide-menu">Categories</span>
                                 </a>
                             </li>
                             <li class="sidebar-item">
                                 <a class="sidebar-link waves-effect waves-dark sidebar-link"
                                    href="/product/list" aria-expanded="false">
-                                    <i class="mdi me-2 mdi-table"></i><span class="hide-menu">Products</span>
+                                    <i class="mdi me-2 mdi-basket"></i><span class="hide-menu">Products</span>
                                 </a>
                             </li>
                             <li class="sidebar-item">
                                 <a class="sidebar-link waves-effect waves-dark sidebar-link"
                                    href="/supplier/list" aria-expanded="false">
-                                    <i class="mdi me-2 mdi-emoticon"></i><span class="hide-menu">Suppliers</span>
+                                    <i class="mdi me-2 mdi-ferry"></i><span class="hide-menu">Suppliers</span>
                                 </a>
                             </li>
                             <li class="sidebar-item">
                                 <a class="sidebar-link waves-effect waves-dark sidebar-link"
                                    href="/shipper/list" aria-expanded="false">
-                                    <i class="mdi me-2 mdi-earth"></i><span class="hide-menu">Shippers</span>
+                                    <i class="mdi me-2 mdi-truck-delivery"></i><span class="hide-menu">Shippers</span>
                                 </a>
                             </li>
                             <li class="sidebar-item">
                                 <a class="sidebar-link waves-effect waves-dark sidebar-link"
                                    href="/order/list" aria-expanded="false">
-                                    <i class="mdi me-2 mdi-book-open-variant"></i><span class="hide-menu">Orders</span>
+                                    <i class="mdi me-2 mdi-package-variant-closed"></i><span class="hide-menu">Orders</span>
                                 </a>
                             </li>
                             <li class="sidebar-item">
                                 <a class="sidebar-link waves-effect waves-dark sidebar-link"
                                    href="/role/list" aria-expanded="false">
-                                    <i class="mdi me-2 mdi-help-circle"></i><span class="hide-menu">Roles</span>
+                                    <i class="mdi me-2 mdi-contacts"></i><span class="hide-menu">Roles</span>
                                 </a>
                             </li>
                             @*<li class="text-center p-20 upgrade-btn">
-                                    <a href="https://www.wrappixel.com/templates/materialpro/"
-                                       class="btn btn-warning text-white mt-4" target="_blank">
-                                        Upgrade to Pro
-                                    </a>
-                                </li>*@
+            <a href="https://www.wrappixel.com/templates/materialpro/"
+               class="btn btn-warning text-white mt-4" target="_blank">
+                Upgrade to Pro
+            </a>
+        </li>*@
                         </ul>
 
                     </nav>
@@ -323,8 +328,10 @@
         <link rel="icon" href="~/assets/images/favicon.ico">
 
         <!-- Core Style CSS -->
+       
         <link href="~/css/core-style.css" rel="stylesheet" />
         <link href="~/css/style.css" rel="stylesheet" />
+
 
     </head>
 
@@ -356,7 +363,7 @@
             <div class="mobile-nav">
                 <!-- Navbar Brand -->
                 <div class="amado-navbar-brand">
-                    <p>Shop<a href="/home/index"><img src="~/assets/images/planet1.png" alt=""></a>sphere</p> 
+                    @*<p>Shop<a href="/home/index"><img src="~/assets/images/planet1.png" alt=""></a>sphere</p>*@
                 </div>
                 <!-- Navbar Toggler -->
                 <div class="amado-navbar-toggler">
@@ -373,7 +380,7 @@
                 <!-- Logo -->
                 <div class="logo">
                     <h3><b>Shop<a href="/home/index"><img style="width:20%" src="~/assets/images/planet1.png" alt=""></a>sphere</b></h3>
-                    
+
                 </div>
                 <!-- Amado Nav -->
                 <nav class="amado-nav">
@@ -381,33 +388,35 @@
                         <li class="active"><a href="/home/index">Home</a></li>
                         <li><a href="/product/shop">Shop</a></li>
                         <li><a href="/cart/list">Cart</a></li>
-                        <li><a href="checkout.html">Checkout</a></li>
                         <li><a href="/auth/logout">Logout</a></li>
                     </ul>
                 </nav>
                 <!-- Button Group -->
                 @*<div class="amado-btn-group mt-30 mb-100">
-                    <a href="#" class="btn amado-btn mb-15">%Discount%</a>
-                    <a href="#" class="btn amado-btn active">New this week</a>
-                </div>*@
+                        <a href="#" class="btn amado-btn mb-15">%Discount%</a>
+                        <a href="#" class="btn amado-btn active">New this week</a>
+                    </div>*@
                 <!-- Cart Menu -->
                 <div class="cart-fav-search mb-100">
-                    <a href="/cart/list" class="cart-nav"><img src="~/assets/images/cart.png" alt=""> Cart <span>0@*@Model.Sum(x => x.Quantity)*@</span></a>
+
+                    @*@Html.Partial("_CartCountPartialView")*@
+                    <partial name="_CartCountPartialView" />
+
                     @*<a href="#" class="fav-nav"><img src="img/core-img/favorites.png" alt=""> Favourite</a>
-                    <a href="#" class="search-nav"><img src="img/core-img/search.png" alt=""> Search</a>*@
+                        <a href="#" class="search-nav"><img src="img/core-img/search.png" alt=""> Search</a>*@
                 </div>
                 <!-- Social Button -->
                 <div class="social-info d-flex justify-content-between">
-                    <a href="#"><i class="fa fa-pinterest" aria-hidden="true"></i></a>
-                    <a href="#"><i class="fa fa-instagram" aria-hidden="true"></i></a>
-                    <a href="#"><i class="fa fa-facebook" aria-hidden="true"></i></a>
-                    <a href="#"><i class="fa fa-twitter" aria-hidden="true"></i></a>
+                    <a href="https://tr.pinterest.com/"><i class="mdi me-2 mdi-pinterest" aria-hidden="true"></i></a>
+                    <a href="https://www.instagram.com/"><i class="mdi me-2 mdi-instagram" aria-hidden="true"></i></a>
+                    <a href="https://www.facebook.com/"><i class="mdi me-2 mdi-facebook" aria-hidden="true"></i></a>
+                    <a href="https://twitter.com/"><i class="mdi me-2 mdi-twitter" aria-hidden="true"></i></a>
                 </div>
             </header>
             <!-- Header Area End -->
 
             @RenderBody()
-           
+
 
         </div>
         <!-- ##### Main Content Wrapper End ##### -->
@@ -473,9 +482,9 @@
                                             <li class="nav-item">
                                                 <a class="nav-link" href="/cart/list">Cart</a>
                                             </li>
-                                            <li class="nav-item">
-                                                <a class="nav-link" href="/cart/checkout">Checkout</a>
-                                            </li>
+                                            @*<li class="nav-item">
+                                                    <a class="nav-link" href="/cart/checkout">Checkout</a>
+                                                </li>*@
                                         </ul>
                                     </div>
                                 </nav>

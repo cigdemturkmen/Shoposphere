@@ -36,6 +36,7 @@ namespace Shoposphere.Admin.Controllers
         }
 
         #region Resources (Sessions in net core)
+        // docs.microsoft.com/tr-tr/aspnet/core/fundamentals/app-state?view=aspnetcore-6.0
 
         // learningprogramming.net/net/asp-net-core-mvc-5/build-shopping-cart-with-session-in-asp-net-core-mvc-5/
 
@@ -57,7 +58,8 @@ namespace Shoposphere.Admin.Controllers
                     var cartItem = new CartItem()
                     {
                         Product = product,
-                        Quantity = 1
+                        Quantity = 1,
+                        PictureStr = Convert.ToBase64String(product.Picture),
                     };
 
                     cartItemList.Add(cartItem); // adds new CartItem to the cartItemList
@@ -88,19 +90,16 @@ namespace Shoposphere.Admin.Controllers
                     }
                     HttpContext.Session.SetString("SessionShopCart", JsonConvert.SerializeObject(cartItemList));
                 }
-
             }
-
+            
             return RedirectToAction("List");
         }
-
-
 
         public IActionResult Delete(int id)
         {
             var cartItemList = new List<CartItem>();
 
-             var sessionCart = HttpContext.Session.GetString("SessionShopCart");
+            var sessionCart = HttpContext.Session.GetString("SessionShopCart");
 
             if (sessionCart != null)
             {
@@ -119,5 +118,12 @@ namespace Shoposphere.Admin.Controllers
             }
             return RedirectToAction("List");
         }
+
+        //public PartialViewResult _CartCountPartialView()
+        //{
+        //    TempData["Cart"] = JsonConvert.DeserializeObject<List<CartItem>>(HttpContext.Session.GetString("SessionShopCart"));
+        //    return PartialView();
+        //}
+
     }
 }

@@ -21,7 +21,7 @@ namespace Shoposphere.Data
             }
 
             modelBuilder.Entity<OrderDetail>().HasKey(x => new { x.OrderID, x.ProductID });
-            modelBuilder.Entity<ProductSupplier>().HasKey(x => new { x.SupplierId, x.ProductId }); // sil
+            // modelBuilder.Entity<ProductSupplier>().HasKey(x => new { x.SupplierId, x.ProductId }); // sil
 
             modelBuilder.Entity<Category>().Property(x => x.IsActive).HasDefaultValue(true);
             modelBuilder.Entity<Comment>().Property(x => x.IsActive).HasDefaultValue(true);
@@ -38,7 +38,7 @@ namespace Shoposphere.Data
         public DbSet<Order> Orders { get; set; }
         public DbSet<OrderDetail> OrderDetails { get; set; }
         public DbSet<Product> Products { get; set; }
-        public DbSet<ProductSupplier> productSuppliers { get; set; } // sil
+        // public DbSet<ProductSupplier> productSuppliers { get; set; } // sil
         public DbSet<Shipper> Shippers { get; set; }
         public DbSet<Supplier> Suppliers { get; set; }
         public DbSet<User> Users { get; set; }

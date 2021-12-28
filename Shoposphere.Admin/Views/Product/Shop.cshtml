@@ -26,40 +26,39 @@
                     </div>
                     <!-- Sorting -->
                     <!-- #region Sorting (!)) -->
-
                     @*<div class="product-sorting d-flex">
-                        <div class="sort-by-date d-flex align-items-center mr-15">
-                            <p>Sort by</p>
-                            <form action="#" method="get">
-                                <select name="select" id="sortBydate" style="display:none;">
-                                    <option value="value">Date</option>
-                                    <option value="value">Newest</option>
-                                    <option value="value">Popular</option>
-                                </select>
-                                <div class="nice-select" tabindex="0">
-                                    <span class="current">Date</span>
-                                    <ul class="list">
-                                        <li data-value="value" class="option selected focus">Date</li>
-                                        <li data-value="value" class="option">Newest</li>
-                                        <li data-value="value" class="option">Popular</li>
-                                    </ul>
-                                    ::after
-                                </div>
+                            <div class="sort-by-date d-flex align-items-center mr-15">
+                                <p>Sort by</p>
+                                <form action="#" method="get">
+                                    <select name="select" id="sortBydate" style="display:none;">
+                                        <option value="value">Date</option>
+                                        <option value="value">Newest</option>
+                                        <option value="value">Popular</option>
+                                    </select>
+                                    <div class="nice-select" tabindex="0">
+                                        <span class="current">Date</span>
+                                        <ul class="list">
+                                            <li data-value="value" class="option selected focus">Date</li>
+                                            <li data-value="value" class="option">Newest</li>
+                                            <li data-value="value" class="option">Popular</li>
+                                        </ul>
+                                        ::after
+                                    </div>
 
-                            </form>
-                        </div>
-                        <div class="view-product d-flex align-items-center">
-                            <p>View</p>
-                            <form action="#" method="get">
-                                <select name="select" id="viewProduct">
-                                    <option value="value">12</option>
-                                    <option value="value">24</option>
-                                    <option value="value">48</option>
-                                    <option value="value">96</option>
-                                </select>
-                            </form>
-                        </div>
-                    </div>*@
+                                </form>
+                            </div>
+                            <div class="view-product d-flex align-items-center">
+                                <p>View</p>
+                                <form action="#" method="get">
+                                    <select name="select" id="viewProduct">
+                                        <option value="value">12</option>
+                                        <option value="value">24</option>
+                                        <option value="value">48</option>
+                                        <option value="value">96</option>
+                                    </select>
+                                </form>
+                            </div>
+                        </div>*@
 
                     <!-- #endregion -->
                 </div>
@@ -70,14 +69,16 @@
         <div class="row">
             @foreach (var item in Model)
             {
-                <div class="col-12 col-sm-6 col-md-12 col-xl-6 float-left">
+                @*<div class="col-12 col-sm-6 col-md-12 col-xl-6">*@
+                <div class="col-6">
                     <div class="single-product-wrapper">
                         <div class="product-img">
-                            <a href="/product/detail/@item.Id"><img style="width:30%" src="data:image;base64, @item.PictureStr" alt=""></a>
+                            <a href="/product/detail/@item.Id"><img style="max-width:100%;height:auto"; src="data:image;base64, @item.PictureStr" alt=""></a>
                             <!-- Hover Thumb -->
                             <img class="hover-img" src="img/product-img/product2.jpg" alt="">
                         </div>
-                        <div class="product-description d-flex align-items-center justify-content-between">
+                        @*<div class="product-description d-flex align-items-center justify-content-between">*@
+                        <div class="product-description col-6">
                             <!-- Product Meta Data -->
                             <div class="product-meta-data">
                                 <div class="line"></div>

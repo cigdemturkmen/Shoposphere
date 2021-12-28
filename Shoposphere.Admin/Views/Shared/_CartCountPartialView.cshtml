@@ -1,0 +1,31 @@
+﻿@*@model IEnumerable<Shoposphere.Admin.Models.CartItem>
+
+    @{
+        var count = 0;
+
+        foreach (var item in Model)
+        {
+            count += item.Quantity;
+        }
+    }*@
+
+
+@{ // !!!
+
+    List<CartItem> cart = null;
+
+    var count = 0;
+
+    if (cart != null)
+    {
+        foreach (var item in cart)
+        {
+            count += item.Quantity;
+        }
+    }
+
+}
+
+<a href="/cart/list" class="cart-nav">
+    <img src="~/assets/images/cart.png" alt=""> Cart <span>@count</span>
+</a>

@@ -29,7 +29,6 @@ namespace Shoposphere.Admin.Models
         [DisplayName("Reorder Level")]
         public short ReorderLevel { get; set; }
 
-        [DisplayName("Available")]
         public bool Discontinued { get; set; }
 
         public bool Isactive { get; set; }

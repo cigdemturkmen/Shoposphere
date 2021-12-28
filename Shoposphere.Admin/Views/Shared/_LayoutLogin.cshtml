@@ -87,25 +87,27 @@
     @RenderSection("linksOrStyle", false)
 </head>
 <body>
- 
-        <div class="container-login100 myimage" style="background-image: url('/images/bg-01.jpg');">
-            @* BACKROUND IMG BURADA *@
-            <div class="wrap-login100 p-l-55 p-r-55 p-t-80 p-b-30">
-                @RenderBody()
-            </div>
+
+    <div class="container-login100 myimage" style="background-image: url('/images/bg-01.jpg');">
+        @* BACKROUND IMG BURADA *@
+        <div class="wrap-login100 p-l-55 p-r-55 p-t-80 p-b-30">
+            @RenderBody()
         </div>
+    </div>
 
-        <div id="dropDownSelect1"></div>
+    <div id="dropDownSelect1"></div>
 
-        <script src="~/vendor/jquery-3.2.1.min.js"></script>
-        <script src="~/vendor/animsition.min.js"></script>
-        <script src="~/vendor/popper.min.js"></script>
-        <script src="~/vendor/bootstrap.min.js"></script>
-        <script src="~/vendor/select2.min.js"></script>
-        <script src="~/vendor/moment.min.js"></script>
-        <script src="~/vendor/daterangepicker.js"></script>
-        <script src="~/vendor/countdowntime.js"></script>
-        <script src="~/vendor/main.js"></script>
-        @RenderSection("scripts", false)
+    <script src="~/vendor/jquery-3.2.1.min.js"></script>
+    <script src="~/vendor/animsition.min.js"></script>
+    <script src="~/vendor/popper.min.js"></script>
+    <script src="~/vendor/bootstrap.min.js"></script>
+    <script src="~/vendor/select2.min.js"></script>
+    <script src="~/vendor/moment.min.js"></script>
+    <script src="~/vendor/daterangepicker.js"></script>
+    <script src="~/vendor/countdowntime.js"></script>
+    <script src="~/vendor/main.js"></script>
+    <script src="~/js/jquery.validate.min.js"></script>
+    <script src="~/js/jquery.validate.unobtrusive.min.js"></script>
+    @RenderSection("scripts", false)
 </body>
 </html>

@@ -18,22 +18,27 @@
 
     var priceList = new List<decimal>();
 }
-
+@if (TempData["Message"] != null)
+{
+    <div class="alert alert-info">
+        @TempData["Message"]
+    </div>
+}
 
 @if (isAdmin)
 {
-    // admin panelinde neler olabilir...
+    // TODO - admin panelinde neler olabilir...
 }
 
 @if (!isAdmin)
 {
     <div class="products-catagories-area clearfix">
         <div class="amado-pro-catagory clearfix">
-            
-            @foreach (var category in Model)
+
+            @foreach (var category in Model) // kategorideki en düşük fiyatlı ürünü bul
             {
                 var products = category.Products;
-                
+
 
                 if (products != null)
                 {
@@ -42,18 +47,18 @@
                         var unitPrice = product.UnitPrice;
                         priceList.Add(unitPrice);
                     }
-                   
+
                 }
-               
+
                 var minPrice = priceList.Min();
 
                 <div class="single-products-catagory clearfix">
                     <a href="product/shop/@category.Id">
                         <img style="width:100%" src="data:image;base64, @category.PictureStr" alt="">
-                        
+
                         <div class="hover-content">
                             <div class="line"></div>
-                            <p>From $@minPrice</p> @* TODO - categorideki en düşük fiyatlı ürün buldurulacak*@
+                            <p>From $@minPrice</p> 
                             <h4>@(category.CategoryName)</h4>
                         </div>
                     </a>

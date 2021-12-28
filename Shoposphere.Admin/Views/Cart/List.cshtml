@@ -30,7 +30,7 @@
 
                                 <tr>
                                     <td class="cart_product_img">
-                                        <a href="#"><img style="width:30%" src="data:image;base64, @item.PictureStr" alt="@item.Product.ProductName"></a>
+                                        <a href="#"><img style="width:50%" src="data:image;base64, @item.PictureStr" alt="@item.Product.ProductName"></a>
                                     </td>
                                     <td class="cart_product_desc">
                                         <h5>@item.Product.ProductName</h5>
@@ -39,13 +39,13 @@
                                         <span>@item.Product.UnitPrice</span>
                                     </td>
                                     <td class="qty">
-                                        <div class="qty-btn d-flex">               
+                                        <div class="qty-btn d-flex">
                                             <div class="quantity">
-                                               <span class="qty-minus" onclick="location.href='/cart/delete/@item.Product.Id';"><i class="fa fa-minus" aria-hidden="true"></i></span>
+                                                <span class="qty-minus" onclick="location.href='/cart/delete/@item.Product.Id';"><i class="fa fa-minus" aria-hidden="true"></i></span>
                                                 <input type="number" class="qty-text" id="qty" step="1" min="1" max="300" name="quantity" value="@item.Quantity">
-                                               <span class="qty-plus" onclick="location.href='/cart/add/@item.Product.Id';"><i class="fa fa-plus" aria-hidden="true"></i></span>
+                                                <span class="qty-plus" onclick="location.href='/cart/add/@item.Product.Id';"><i class="fa fa-plus" aria-hidden="true"></i></span>
                                             </div>
-                                        
+                                        </div>
                                     </td>
                                 </tr>
                             }
@@ -66,7 +66,7 @@
                         <li><span>total:</span> <span>@Model.Sum(x => x.Subtotal)</span></li>
                     </ul>
                     <div class="cart-btn mt-100">
-                        <a href="cart.html" class="btn amado-btn w-100">Checkout</a>
+                        <a href="/order/checkout" class="btn amado-btn w-100">Checkout</a>
                     </div>
                 </div>
             </div>
