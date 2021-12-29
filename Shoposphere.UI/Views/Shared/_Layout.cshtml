@@ -6,12 +6,14 @@
     var firstname = "";
     var lastname = "";
     var isAdmin = false;
+    var isCustomer = false;
 
     if (Context.User.Identity.IsAuthenticated)
     {
         firstname = Context.User.Claims.FirstOrDefault(x => x.Type == ClaimTypes.Name).Value;
         lastname = Context.User.Claims.FirstOrDefault(x => x.Type == ClaimTypes.Surname).Value;
         isAdmin = Context.User.Claims.FirstOrDefault(x => x.Type == ClaimTypes.Role).Value == "1";
+        isCustomer = Context.User.Claims.FirstOrDefault(x => x.Type == ClaimTypes.Role).Value == "2";
     }
 }
 <!DOCTYPE html>
@@ -121,7 +123,7 @@
                                 </a>
                                 <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
                                     @*<li><a class="dropdown-item " href="#">Profile Settings</a></li>*@
-                                    <li><a class="dropdown-item" href="/auth/logout">Logout</a></li>
+                                    <li><a data-toggle="modal" data-target="#logoutModal" class="dropdown-item" href="/auth/logout" >Logout</a></li>
                                 </ul>
                             </li>
                         </ul>
@@ -187,11 +189,11 @@
                                 </a>
                             </li>
                             @*<li class="text-center p-20 upgrade-btn">
-            <a href="https://www.wrappixel.com/templates/materialpro/"
-               class="btn btn-warning text-white mt-4" target="_blank">
-                Upgrade to Pro
-            </a>
-        </li>*@
+                                    <a href="https://www.wrappixel.com/templates/materialpro/"
+                                       class="btn btn-warning text-white mt-4" target="_blank">
+                                        Upgrade to Pro
+                                    </a>
+                                </li>*@
                         </ul>
 
                     </nav>
@@ -214,7 +216,7 @@
                         </div>
                         <div class="col-4 link-wrap">
                             <!-- item-->
-                            <a href="/auth/logout" class="link" data-toggle="tooltip" title="logout" data-original-title="Logout">
+                            <a data-toggle="modal" data-target="#logoutModal" href="/auth/logout" class="link" @*data-toggle="tooltip"*@ title="logout" data-original-title="Logout">
                                 <i class="mdi mdi-power"></i>
                             </a>
                         </div>
@@ -278,6 +280,27 @@
 
                 </div>
 
+                <!-- Logout Modal-->
+                <div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+                     aria-hidden="true">
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="exampleModalLabel">Ready to Leave?</h5>
+                                <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">×</span>
+                                </button>
+                            </div>
+                            <div class="modal-body">Select "Logout" below if you are ready to end your current session.</div>
+                            <div class="modal-footer">
+                                <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
+                                <a class="btn btn-primary" href="/auth/login">Logout</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
                 <!-- End Container fluid  -->
                 <!-- footer -->
 
@@ -328,7 +351,7 @@
         <link rel="icon" href="~/assets/images/favicon.ico">
 
         <!-- Core Style CSS -->
-       
+
         <link href="~/css/core-style.css" rel="stylesheet" />
         <link href="~/css/style.css" rel="stylesheet" />
 
@@ -379,7 +402,7 @@
                 </div>
                 <!-- Logo -->
                 <div class="logo">
-                    <h3><b>Shop<a href="/home/index"><img style="width:20%" src="~/assets/images/planet1.png" alt=""></a>sphere</b></h3>
+                    <p><h3><b>Shop<a href="/home/index"><img style="width:20%" src="~/assets/images/planet1.png" alt=""></a>sphere</b></h3></p>
 
                 </div>
                 <!-- Amado Nav -->
@@ -388,14 +411,23 @@
                         <li class="active"><a href="/home/index">Home</a></li>
                         <li><a href="/product/shop">Shop</a></li>
                         <li><a href="/cart/list">Cart</a></li>
-                        <li><a href="/auth/logout">Logout</a></li>
+                        @if (isCustomer)
+                        {
+                            <li><a class="btn btn-outline-info" data-toggle="modal" data-target="#logoutModal" href="/auth/logout">Logout</a></li>
+                        }
+
+                        @if (!isAdmin && !isCustomer)
+                        {
+                            <li><a style="border-radius: 25px" class="btn btn-outline-primary btn-sm" href="/auth/login">Login</a></li>
+                        }
+
                     </ul>
                 </nav>
                 <!-- Button Group -->
                 @*<div class="amado-btn-group mt-30 mb-100">
-                        <a href="#" class="btn amado-btn mb-15">%Discount%</a>
-                        <a href="#" class="btn amado-btn active">New this week</a>
-                    </div>*@
+                    <a href="#" class="btn amado-btn mb-15">%Discount%</a>
+                    <a href="#" class="btn amado-btn active">New this week</a>
+                </div>*@
                 <!-- Cart Menu -->
                 <div class="cart-fav-search mb-100">
 
@@ -403,7 +435,7 @@
                     <partial name="_CartCountPartialView" />
 
                     @*<a href="#" class="fav-nav"><img src="img/core-img/favorites.png" alt=""> Favourite</a>
-                        <a href="#" class="search-nav"><img src="img/core-img/search.png" alt=""> Search</a>*@
+                    <a href="#" class="search-nav"><img src="img/core-img/search.png" alt=""> Search</a>*@
                 </div>
                 <!-- Social Button -->
                 <div class="social-info d-flex justify-content-between">
@@ -444,6 +476,27 @@
             </div>
         </section>
         <!-- ##### Newsletter Area End ##### -->
+
+        <!-- Logout Modal-->
+        <div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+             aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Ready to Leave?</h5>
+                        <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">×</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">Select "Logout" below if you are ready to end your current session.</div>
+                    <div class="modal-footer">
+                        <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
+                        <a style="border-radius: 25px" class="btn btn-primary btn-sm" href="/auth/logout">Logout</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
         <!-- ##### Footer Area Start ##### -->
         <footer class="footer_area clearfix">
             <div class="container">
@@ -483,8 +536,8 @@
                                                 <a class="nav-link" href="/cart/list">Cart</a>
                                             </li>
                                             @*<li class="nav-item">
-                                                    <a class="nav-link" href="/cart/checkout">Checkout</a>
-                                                </li>*@
+                                                <a class="nav-link" href="/cart/checkout">Checkout</a>
+                                            </li>*@
                                         </ul>
                                     </div>
                                 </nav>

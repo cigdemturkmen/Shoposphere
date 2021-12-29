@@ -9,6 +9,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Shoposphere.UI.Controllers
 {
@@ -22,6 +23,7 @@ namespace Shoposphere.UI.Controllers
             _shipperRepository = shipperRepositor;
         }
 
+        [Authorize(Roles = "1")]
         public IActionResult List()
         {
             var orders = _orderRepository.GetAll(x => x.IsActive).Select(x =>
@@ -89,6 +91,7 @@ namespace Shoposphere.UI.Controllers
         //    return RedirectToAction("List", "Cart");
         //}
 
+        [Authorize(Roles = "2")]
         public ActionResult Checkout()
         {
             ViewBag.Shippers = _shipperRepository.GetAll(x => x.IsActive).Select(x => new SelectListItem()
@@ -111,10 +114,6 @@ namespace Shoposphere.UI.Controllers
         [HttpPost]
         public ActionResult Checkout(OrderViewModel model)
         {
-            // sepetteki ürünleri order detail olarak düzenleyerek order nesnesine ekleyerek dbye kayıt edeceğiz.
-
-
-
             var cartItemList = new List<CartItem>();
 
             var sessionCart = HttpContext.Session.GetString("SessionShopCart");

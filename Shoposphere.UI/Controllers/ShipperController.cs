@@ -6,9 +6,11 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Shoposphere.UI.Controllers
 {
+    [Authorize(Roles = "1")]
     public class ShipperController : BaseController
     {
         private readonly IRepository<Shipper> _shipperRepository;
@@ -17,6 +19,7 @@ namespace Shoposphere.UI.Controllers
             _shipperRepository = shipperRepository;
         }
 
+        [AllowAnonymous]
         public IActionResult List()
         {
             var shippers = _shipperRepository.GetAll(x => x.IsActive).Select(x =>

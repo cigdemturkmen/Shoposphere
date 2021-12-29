@@ -18,12 +18,13 @@ namespace Shoposphere.UI.Controllers
     public class CategoryController : BaseController
     {
         private readonly IRepository<Category> _categoryRepository;
-        private readonly IRepository<Product> _productRepository;
+        // private readonly IRepository<Product> _productRepository;
         public CategoryController(IRepository<Category> categoryRepository)
         {
             _categoryRepository = categoryRepository;
         }
 
+        [AllowAnonymous]
         public ActionResult List()
         {
             var categories = _categoryRepository.GetAll(x => x.IsActive).Select(x =>
@@ -38,6 +39,7 @@ namespace Shoposphere.UI.Controllers
             return View(categories);
         }
 
+        [AllowAnonymous]
         public PartialViewResult _SidebarPartialView()
         {
             var categories = _categoryRepository.GetAll(x => x.IsActive).Select(x =>
@@ -64,7 +66,7 @@ namespace Shoposphere.UI.Controllers
                 CategoryDescription = category.CategoryDescription,
                 Products = category.Products,
             };
-            return View();
+            return RedirectToAction("List","Product");
         }
 
         public ActionResult Add()

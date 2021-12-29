@@ -6,9 +6,11 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Shoposphere.UI.Controllers
 {
+    [Authorize(Roles = "1")]
     public class SupplierController : BaseController
     {
         private readonly IRepository<Supplier> _supplierRepository;

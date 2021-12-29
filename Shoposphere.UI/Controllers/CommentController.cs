@@ -25,6 +25,7 @@ namespace Shoposphere.UI.Controllers
             _userRepository = userRepository;
         }
 
+        [Authorize(Roles = "1")]
         public IActionResult List(int id)
         {
             var vm = _commentRepository.GetAll(include: x => x.Include(y => y.Product).Include(z => z.User)).Where(x => x.Product.Id == id).Select(x => new CommentViewModel()
@@ -41,7 +42,7 @@ namespace Shoposphere.UI.Controllers
             return View(vm);
         }
 
-        [Authorize(Roles = "0")]
+        [Authorize(Roles = "2")]
         public IActionResult Add() // bunu sadece customer kullanabilecek.
         {
             return View();
@@ -70,16 +71,16 @@ namespace Shoposphere.UI.Controllers
 
             var result = _commentRepository.Add(entity);
 
-            if (!result)
+            if (result)
             {
-                TempData["Message"] = "Uh oh! Something went wrong...";
-                return View("Add", model);
+                return RedirectToAction("Index", "Home"); // TODO - burada yorum yaptıktan sonra nereye yönlendireceğiz?
             }
-
-            return View(); // TODO - burada yorum yaptıktan sonra nereye yönlendireceğiz?
+            TempData["Message"] = "Uh oh! Something went wrong...";
+            return View("Add", model);
+            
         }
 
-        [Authorize(Roles = "Customer")]
+        [Authorize(Roles = "2")]
         public ActionResult Edit(int id)
         {
             var comment = _commentRepository.Get(x => x.Id == id && x.IsActive && x.IsPublished);
@@ -104,6 +105,7 @@ namespace Shoposphere.UI.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "2")]
         public IActionResult Edit(CommentViewModel model)
         {
             if (!ModelState.IsValid)
@@ -135,7 +137,7 @@ namespace Shoposphere.UI.Controllers
             return RedirectToAction("List"); // TODO - yorumu düzenledikten sonra nereye yönlensin?
         }
 
-        [Authorize(Roles = "Customer")]
+        [Authorize(Roles = "2")]
         public IActionResult Delete(int id)
         {
             var result = _commentRepository.Delete(id);

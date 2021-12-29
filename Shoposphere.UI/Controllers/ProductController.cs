@@ -10,6 +10,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Shoposphere.UI.Controllers
 {
@@ -27,6 +28,7 @@ namespace Shoposphere.UI.Controllers
 
         }
 
+        
         public IActionResult List(int? id)
         {
             var products = _productRepository.GetAll(x => x.IsActive, include: x => x.Include(y => y.Category).Include(y => y.Supplier));
@@ -55,6 +57,7 @@ namespace Shoposphere.UI.Controllers
             return View(vm);
         }
 
+        
         public IActionResult Detail(int id)
         {
            // var product = _productRepository.Get(x => x.IsActive && x.Id == id );
@@ -79,6 +82,7 @@ namespace Shoposphere.UI.Controllers
             return RedirectToAction("Shop");
         }
 
+        
         public IActionResult Shop(int? id)
         {
             var products = _productRepository.GetAll(x => x.IsActive, include: x => x.Include(y => y.Category).Include(y => y.Supplier));
@@ -119,7 +123,7 @@ namespace Shoposphere.UI.Controllers
             return View(vm);
         }
 
-        
+        [Authorize(Roles = "1")]
         public IActionResult Add()
         {
             ViewBag.Categories = _categoryRepository.GetAll(x => x.IsActive).Select(x => new SelectListItem()
@@ -214,6 +218,7 @@ namespace Shoposphere.UI.Controllers
             return View("Add", model);
         }
 
+        [Authorize(Roles = "1")]
         public IActionResult Edit(int id)
         {
             var product = _productRepository.Get(x => x.Id == id && x.IsActive, include: x => x.Include(y => y.Category).Include(y => y.Supplier));
@@ -341,6 +346,7 @@ namespace Shoposphere.UI.Controllers
             return View(model);
         }
 
+        [Authorize(Roles = "1")]
         public IActionResult Delete(int id)
         {
             var result = _productRepository.Delete(id);

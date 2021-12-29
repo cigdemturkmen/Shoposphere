@@ -76,10 +76,7 @@ namespace Shoposphere.UI.Controllers
                 Password = model.Password,
             };
 
-            bool result;
-
-
-            result = _userRepository.Add(entity);
+            var result = _userRepository.Add(entity);
 
             if (result)
             {
@@ -142,9 +139,7 @@ namespace Shoposphere.UI.Controllers
                 
             };
 
-            bool result;
-
-            result = _userRepository.Edit(entity);
+            var result = _userRepository.Edit(entity);
 
             if (result)
             {
@@ -154,6 +149,7 @@ namespace Shoposphere.UI.Controllers
             TempData["Message"] = "Uh oh! Something went wrong...";
             return View("Edit", model);
         }
+
 
         public IActionResult Delete(int id)
         {

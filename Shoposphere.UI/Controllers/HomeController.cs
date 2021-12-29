@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace Shoposphere.UI.Controllers
 {
-    [Authorize]
+    // [Authorize]
     public class HomeController : Controller
     {
         private readonly IRepository<Category> _categoryRepository;

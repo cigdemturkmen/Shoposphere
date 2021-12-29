@@ -45,7 +45,7 @@ namespace Shoposphere.UI.Controllers
                 CreatedDate = DateTime.Now,
                 RoleId = 2,
                 // role default 0 = customer
-                
+
             };
 
             var result = _userRepository.Add(user);
@@ -77,7 +77,7 @@ namespace Shoposphere.UI.Controllers
 
             if (user != null)
             {
-             
+
 
                 var claims = new List<Claim>()
                 {
@@ -103,7 +103,8 @@ namespace Shoposphere.UI.Controllers
         public async Task<IActionResult> Logout()
         {
             await HttpContext.SignOutAsync();
-            return RedirectToAction("login");
+           
+            return RedirectToAction("Index", "Home");
         }
     }
 }

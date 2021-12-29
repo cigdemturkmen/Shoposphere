@@ -1,0 +1,23 @@
+﻿@model Shoposphere.UI.Models.CommentViewModel
+@{
+    ViewData["Title"] = "Add";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@if (TempData["Message"] != null)
+{
+    <div class="alert alert-info">
+        @TempData["Message"]
+    </div>
+}
+
+<form id="commentForm" asp-controller="Comment" asp-action="Add" method="post" asp-antiforgery="true"></form>
+<div class="cart-table-area section-padding-100">
+    <div class="container-fluid">
+        <div class="form-control"><textarea form="commentForm" name="comment" class="form-control w-100" id="comment" cols="30" rows="10" placeholder="Leave a comment about your order"></textarea></div>
+        <hr />
+        <div class="row">
+            <button form="commentForm" type="submit" href="/comment/add" class="btn amado-btn w-100">Send</button>
+        </div>
+    </div>
+</div>

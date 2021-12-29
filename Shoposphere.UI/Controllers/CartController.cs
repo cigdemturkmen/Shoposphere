@@ -9,9 +9,11 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Shoposphere.UI.Controllers
 {
+    [Authorize(Roles = "2")]
     public class CartController : Controller
     {
         private readonly IRepository<Product> _productRepository;
@@ -32,6 +34,7 @@ namespace Shoposphere.UI.Controllers
                 cartItemList = JsonConvert.DeserializeObject<List<CartItem>>(sessionCart);
             }
 
+            TempData["Login"] = "Please login to see your cart";
             return View(cartItemList);
         }
 
@@ -118,12 +121,5 @@ namespace Shoposphere.UI.Controllers
             }
             return RedirectToAction("List");
         }
-
-        //public PartialViewResult _CartCountPartialView()
-        //{
-        //    TempData["Cart"] = JsonConvert.DeserializeObject<List<CartItem>>(HttpContext.Session.GetString("SessionShopCart"));
-        //    return PartialView();
-        //}
-
     }
 }

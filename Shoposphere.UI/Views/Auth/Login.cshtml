@@ -25,6 +25,13 @@
     </div>
 }
 
+@if (TempData["Login"] != null)
+{
+    <div class="alert alert-info">
+        @TempData["Login"]
+    </div>
+}
+
 <!-- #region Alternative Theme -->
 @*<div class="col-lg-8 col-xlg-9 col-md-7">
         <div class="card">
