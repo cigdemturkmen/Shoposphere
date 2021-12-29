@@ -7,7 +7,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Shoposphere.Services", "Sho
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Shoposphere.Data", "Shoposphere.Data\Shoposphere.Data.csproj", "{FB5DCFB7-4162-4C13-A7DD-B6930CA084AB}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Shoposphere.Admin", "Shoposphere.Admin\Shoposphere.Admin.csproj", "{BE62D41C-A367-4B8F-A6FA-77802318F43E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Shoposphere.UI", "Shoposphere.UI\Shoposphere.UI.csproj", "{801DD6CC-4558-474D-A155-7FFBEDA53671}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -23,10 +23,10 @@ Global
 		{FB5DCFB7-4162-4C13-A7DD-B6930CA084AB}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{FB5DCFB7-4162-4C13-A7DD-B6930CA084AB}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{FB5DCFB7-4162-4C13-A7DD-B6930CA084AB}.Release|Any CPU.Build.0 = Release|Any CPU
-		{BE62D41C-A367-4B8F-A6FA-77802318F43E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{BE62D41C-A367-4B8F-A6FA-77802318F43E}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{BE62D41C-A367-4B8F-A6FA-77802318F43E}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{BE62D41C-A367-4B8F-A6FA-77802318F43E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{801DD6CC-4558-474D-A155-7FFBEDA53671}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{801DD6CC-4558-474D-A155-7FFBEDA53671}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{801DD6CC-4558-474D-A155-7FFBEDA53671}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{801DD6CC-4558-474D-A155-7FFBEDA53671}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

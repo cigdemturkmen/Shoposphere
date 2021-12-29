@@ -1,0 +1,513 @@
+﻿@using System.Security.Claims;
+
+@{
+    Layout = null;
+
+    var firstname = "";
+    var lastname = "";
+    var isAdmin = false;
+
+    if (Context.User.Identity.IsAuthenticated)
+    {
+        firstname = Context.User.Claims.FirstOrDefault(x => x.Type == ClaimTypes.Name).Value;
+        lastname = Context.User.Claims.FirstOrDefault(x => x.Type == ClaimTypes.Surname).Value;
+        isAdmin = Context.User.Claims.FirstOrDefault(x => x.Type == ClaimTypes.Role).Value == "1";
+    }
+}
+<!DOCTYPE html>
+@if (isAdmin)
+{
+    <html dir="ltr" lang="en">
+
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <!-- Tell the browser to be responsive to screen width -->
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="keywords"
+              content="wrappixel, admin dashboard, html css dashboard, web dashboard, bootstrap 5 admin, bootstrap 5, css3 dashboard, bootstrap 5 dashboard, materialpro admin bootstrap 5 dashboard, frontend, responsive bootstrap 5 admin template, materialpro admin lite design, materialpro admin lite dashboard bootstrap 5 dashboard template">
+        <meta name="description"
+              content="Material Pro Lite is powerful and clean admin dashboard template, inpired from Bootstrap Framework">
+        <meta name="robots" content="noindex,nofollow">
+        <title>Material Pro Lite Template by WrapPixel</title>
+
+        <link rel="canonical" href="https://www.wrappixel.com/templates/materialpro-lite/" />
+        <!-- Favicon icon -->
+        <link rel="icon" type="image/png" sizes="16x16" href="~/assets/images/favicon.png">
+
+        <!-- Custom CSS -->
+        <link href="~/css/style.min.css" rel="stylesheet">
+        @RenderSection("linksOrStyle", false);
+        <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+        <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+        <!--[if lt IE 9]>
+            <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+            <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+        <![endif]-->
+    </head>
+
+    <body>
+        <div class="preloader">
+            <div class="lds-ripple">
+                <div class="lds-pos"></div>
+                <div class="lds-pos"></div>
+            </div>
+        </div>
+
+        <!-- Main wrapper - style you can find in pages.scss -->
+
+        <div id="main-wrapper" data-layout="vertical" data-navbarbg="skin5" data-sidebartype="full"
+             data-sidebar-position="absolute" data-header-position="absolute" data-boxed-layout="full">
+
+            <!-- Topbar header - style you can find in pages.scss -->
+
+            <header class="topbar" data-navbarbg="skin6">
+                <nav class="navbar top-navbar navbar-expand-md navbar-dark">
+                    <div class="navbar-header" data-logobg="skin6">
+                        <!-- ============================================================== -->
+                        <!-- Logo -->
+                        <!-- ============================================================== -->
+                        <a class="navbar-brand ms-4" href="/home/index">
+                            <span class="logo-text">
+                                <!-- dark Logo text -->
+                                Shop<img style="width:20%" src="~/assets/images/planet3.png" alt="homepage" class="dark-logo" />sphere
+                            </span>
+                        </a>
+                        <!-- ============================================================== -->
+                        <!-- End Logo -->
+                        <!-- ============================================================== -->
+                        <!-- ============================================================== -->
+                        <!-- toggle and nav items -->
+                        <!-- ============================================================== -->
+                        <a class="nav-toggler waves-effect waves-light text-white d-block d-md-none"
+                           href="javascript:void(0)"><i class="ti-menu ti-close"></i></a>
+                    </div>
+                    <!-- ============================================================== -->
+                    <!-- End Logo -->
+                    <!-- ============================================================== -->
+                    <div class="navbar-collapse collapse" id="navbarSupportedContent" data-navbarbg="skin5">
+                        <ul class="navbar-nav d-lg-none d-md-block ">
+                            <li class="nav-item">
+                                <a class="nav-toggler nav-link waves-effect waves-light text-white "
+                                   href="javascript:void(0)"><i class="ti-menu ti-close"></i></a>
+                            </li>
+                        </ul>
+                        <!-- ============================================================== -->
+                        <!-- toggle and nav items -->
+                        <!-- ============================================================== -->
+                        <ul class="navbar-nav me-auto mt-md-0 ">
+                            <!-- ============================================================== -->
+                            <!-- Search -->
+                            <!-- ============================================================== -->
+
+                            <li class="nav-item search-box">
+                                <a class="nav-link text-muted" href="javascript:void(0)"><i class="ti-search"></i></a>
+                                <form class="app-search" style="display: none;">
+                                    <input type="text" class="form-control" placeholder="Search &amp; enter"> <a class="srh-btn"><i class="ti-close"></i></a>
+                                </form>
+                            </li>
+                        </ul>
+
+                        <!-- ============================================================== -->
+                        <!-- Right side toggle and nav items -->
+                        <!-- ============================================================== -->
+                        <ul class="navbar-nav">
+                            <!-- ============================================================== -->
+                            <!-- User profile and search -->
+                            <!-- ============================================================== -->
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle text-muted waves-effect waves-dark" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                    @*<img src="~/assets/images/users/1.jpg" alt="user" class="profile-pic me-2">*@@(firstname +" "+ lastname)
+                                </a>
+                                <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                    @*<li><a class="dropdown-item " href="#">Profile Settings</a></li>*@
+                                    <li><a class="dropdown-item" href="/auth/logout">Logout</a></li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </div>
+                </nav>
+            </header>
+
+            <!-- End Topbar header -->
+            <!-- Left Sidebar - style you can find in sidebar.scss  -->
+
+            <aside class="left-sidebar" data-sidebarbg="skin6">
+                <!-- Sidebar scroll-->
+                <div class="scroll-sidebar">
+                    <!-- Sidebar navigation-->
+                    <nav class="sidebar-nav">
+                        <ul id="sidebarnav">
+                            <!-- User Profile-->
+                            <li class="sidebar-item">
+                                <span class="sidebar-link waves-effect waves-dark sidebar-link">
+                                    <span class="hide-menu"></span>
+                                </span>
+                            </li>
+                            <li class="sidebar-item">
+                                <a class="sidebar-link waves-effect waves-dark sidebar-link"
+                                   href="/user/list" aria-expanded="false">
+                                    <i class="mdi me-2 mdi-face"></i><span class="hide-menu">Users</span>
+                                </a>
+                            </li>
+                            <li class="sidebar-item">
+                                <a class="sidebar-link waves-effect waves-dark sidebar-link"
+                                   href="/category/list" aria-expanded="false">
+                                    <i class="mdi me-2 mdi-format-list-bulleted"></i><span class="hide-menu">Categories</span>
+                                </a>
+                            </li>
+                            <li class="sidebar-item">
+                                <a class="sidebar-link waves-effect waves-dark sidebar-link"
+                                   href="/product/list" aria-expanded="false">
+                                    <i class="mdi me-2 mdi-basket"></i><span class="hide-menu">Products</span>
+                                </a>
+                            </li>
+                            <li class="sidebar-item">
+                                <a class="sidebar-link waves-effect waves-dark sidebar-link"
+                                   href="/supplier/list" aria-expanded="false">
+                                    <i class="mdi me-2 mdi-ferry"></i><span class="hide-menu">Suppliers</span>
+                                </a>
+                            </li>
+                            <li class="sidebar-item">
+                                <a class="sidebar-link waves-effect waves-dark sidebar-link"
+                                   href="/shipper/list" aria-expanded="false">
+                                    <i class="mdi me-2 mdi-truck-delivery"></i><span class="hide-menu">Shippers</span>
+                                </a>
+                            </li>
+                            <li class="sidebar-item">
+                                <a class="sidebar-link waves-effect waves-dark sidebar-link"
+                                   href="/order/list" aria-expanded="false">
+                                    <i class="mdi me-2 mdi-package-variant-closed"></i><span class="hide-menu">Orders</span>
+                                </a>
+                            </li>
+                            <li class="sidebar-item">
+                                <a class="sidebar-link waves-effect waves-dark sidebar-link"
+                                   href="/role/list" aria-expanded="false">
+                                    <i class="mdi me-2 mdi-contacts"></i><span class="hide-menu">Roles</span>
+                                </a>
+                            </li>
+                            @*<li class="text-center p-20 upgrade-btn">
+            <a href="https://www.wrappixel.com/templates/materialpro/"
+               class="btn btn-warning text-white mt-4" target="_blank">
+                Upgrade to Pro
+            </a>
+        </li>*@
+                        </ul>
+
+                    </nav>
+                    <!-- End Sidebar navigation -->
+                </div>
+                <!-- End Sidebar scroll-->
+                <div class="sidebar-footer">
+                    <div class="row">
+                        <div class="col-4 link-wrap">
+                            <!-- item-->
+                            <a href="#" class="link" data-toggle="tooltip" title="" data-original-title="Settings">
+                                <i class="ti-settings"></i>
+                            </a>
+                        </div>
+                        <div class="col-4 link-wrap">
+                            <!-- item-->
+                            <a href="http://gmail.com" class="link" data-toggle="tooltip" title="" data-original-title="Email">
+                                <i class="mdi mdi-gmail"></i>
+                            </a>
+                        </div>
+                        <div class="col-4 link-wrap">
+                            <!-- item-->
+                            <a href="/auth/logout" class="link" data-toggle="tooltip" title="logout" data-original-title="Logout">
+                                <i class="mdi mdi-power"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </aside>
+
+            <!-- End Left Sidebar - style you can find in sidebar.scss  -->
+            <!-- Page wrapper  -->
+
+            <div class="page-wrapper">
+
+                <!-- Bread crumb and right sidebar toggle -->
+
+                <div class="page-breadcrumb">
+                    <div class="row align-items-center">
+                        <div class="col-md-6 col-8 align-self-center">
+                            <h3 class="page-title mb-0 p-0">Admin Page</h3>
+                            <div class="d-flex align-items-center">
+                                <nav aria-label="breadcrumb">
+                                    <ol class="breadcrumb">
+                                        <li class="breadcrumb-item"><a href="#">Home</a></li>
+                                        <li class="breadcrumb-item active" aria-current="page">@ViewData["Title"]</li>
+                                    </ol>
+                                </nav>
+                            </div>
+                        </div>
+                        <div class="col-md-6 col-4 align-self-center">
+                            @*<div class="text-end upgrade-btn">
+                                    <a href="https://www.wrappixel.com/templates/materialpro/"
+                                       class="btn btn-danger d-none d-md-inline-block text-white" target="_blank">
+                                        Upgrade to
+                                        Pro
+                                    </a>
+                                </div>*@
+                        </div>
+                    </div>
+                </div>
+
+                <!-- End Bread crumb and right sidebar toggle -->
+                <!-- Container fluid  -->
+
+                <div class="container-fluid">
+
+                    <!-- Start Page Content -->
+
+                    <div class="row">
+                        <div class="col-12">
+                            <div class="card">
+                                <div class="card-body">
+                                    @RenderBody()
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- End PAge Content -->
+                    <!-- Right sidebar -->
+                    <!-- .right-sidebar -->
+                    <!-- End Right sidebar -->
+
+                </div>
+
+                <!-- End Container fluid  -->
+                <!-- footer -->
+
+                <footer class="footer">
+                    © 2021 Material Pro Admin by <a href="https://www.wrappixel.com/">wrappixel.com </a>
+                </footer>
+
+                <!-- End footer -->
+
+            </div>
+
+            <!-- End Page wrapper  -->
+
+        </div>
+
+        <!-- End Wrapper -->
+        <!-- All Jquery -->
+
+        <script src="~/assets/plugins/jquery/dist/jquery.min.js"></script>
+        <!-- Bootstrap tether Core JavaScript -->
+        <script src="~/assets/plugins/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+        <script src="~/js/app-style-switcher.js"></script>
+        <!--Wave Effects -->
+        <script src="~/js/waves.js"></script>
+        <!--Menu sidebar -->
+        <script src="~/js/sidebarmenu.js"></script>
+        <!--Custom JavaScript -->
+        <script src="~/js/custom.js"></script>
+        @RenderSection("scripts", false);
+    </body>
+
+</html>
+}
+
+@if (!isAdmin)
+{
+    <html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="description" content="">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        <!-- The above 4 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+        <!-- Title  -->
+        <title>Shoposphere | @ViewData["Title"]</title>
+
+        <!-- Favicon  -->
+        <link rel="icon" href="~/assets/images/favicon.ico">
+
+        <!-- Core Style CSS -->
+       
+        <link href="~/css/core-style.css" rel="stylesheet" />
+        <link href="~/css/style.css" rel="stylesheet" />
+
+
+    </head>
+
+    <body>
+        <!-- Search Wrapper Area Start -->
+        <div class="search-wrapper section-padding-100">
+            <div class="search-close">
+                <i class="fa fa-close" aria-hidden="true"></i>
+            </div>
+            <div class="container">
+                <div class="row">
+                    <div class="col-12">
+                        <div class="search-content">
+                            <form action="#" method="get">
+                                <input type="search" name="search" id="search" placeholder="Type your keyword...">
+                                <button type="submit"><img src="~/assets/images/search.png" alt=""></button>
+
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Search Wrapper Area End -->
+        <!-- ##### Main Content Wrapper Start ##### -->
+        <div class="main-content-wrapper d-flex clearfix">
+
+            <!-- Mobile Nav (max width 767px)-->
+            <div class="mobile-nav">
+                <!-- Navbar Brand -->
+                <div class="amado-navbar-brand">
+                    @*<p>Shop<a href="/home/index"><img src="~/assets/images/planet1.png" alt=""></a>sphere</p>*@
+                </div>
+                <!-- Navbar Toggler -->
+                <div class="amado-navbar-toggler">
+                    <span></span><span></span><span></span>
+                </div>
+            </div>
+
+            <!-- Header Area Start -->
+            <header class="header-area clearfix">
+                <!-- Close Icon -->
+                <div class="nav-close">
+                    <i class="fa fa-close" aria-hidden="true"></i>
+                </div>
+                <!-- Logo -->
+                <div class="logo">
+                    <h3><b>Shop<a href="/home/index"><img style="width:20%" src="~/assets/images/planet1.png" alt=""></a>sphere</b></h3>
+
+                </div>
+                <!-- Amado Nav -->
+                <nav class="amado-nav">
+                    <ul>
+                        <li class="active"><a href="/home/index">Home</a></li>
+                        <li><a href="/product/shop">Shop</a></li>
+                        <li><a href="/cart/list">Cart</a></li>
+                        <li><a href="/auth/logout">Logout</a></li>
+                    </ul>
+                </nav>
+                <!-- Button Group -->
+                @*<div class="amado-btn-group mt-30 mb-100">
+                        <a href="#" class="btn amado-btn mb-15">%Discount%</a>
+                        <a href="#" class="btn amado-btn active">New this week</a>
+                    </div>*@
+                <!-- Cart Menu -->
+                <div class="cart-fav-search mb-100">
+
+                    @*@Html.Partial("_CartCountPartialView")*@
+                    <partial name="_CartCountPartialView" />
+
+                    @*<a href="#" class="fav-nav"><img src="img/core-img/favorites.png" alt=""> Favourite</a>
+                        <a href="#" class="search-nav"><img src="img/core-img/search.png" alt=""> Search</a>*@
+                </div>
+                <!-- Social Button -->
+                <div class="social-info d-flex justify-content-between">
+                    <a href="https://tr.pinterest.com/"><i class="mdi me-2 mdi-pinterest" aria-hidden="true"></i></a>
+                    <a href="https://www.instagram.com/"><i class="mdi me-2 mdi-instagram" aria-hidden="true"></i></a>
+                    <a href="https://www.facebook.com/"><i class="mdi me-2 mdi-facebook" aria-hidden="true"></i></a>
+                    <a href="https://twitter.com/"><i class="mdi me-2 mdi-twitter" aria-hidden="true"></i></a>
+                </div>
+            </header>
+            <!-- Header Area End -->
+
+            @RenderBody()
+
+
+        </div>
+        <!-- ##### Main Content Wrapper End ##### -->
+        <!-- ##### Newsletter Area Start ##### -->
+        <section class="newsletter-area section-padding-100-0">
+            <div class="container">
+                <div class="row align-items-center">
+                    <!-- Newsletter Text -->
+                    <div class="col-12 col-lg-6 col-xl-7">
+                        <div class="newsletter-text mb-100">
+                            <h2>Subscribe for a <span>25% Discount</span></h2>
+                            <p>Nulla ac convallis lorem, eget euismod nisl. Donec in libero sit amet mi vulputate consectetur. Donec auctor interdum purus, ac finibus massa bibendum nec.</p>
+                        </div>
+                    </div>
+                    <!-- Newsletter Form -->
+                    <div class="col-12 col-lg-6 col-xl-5">
+                        <div class="newsletter-form mb-100">
+                            <form action="#" method="post">
+                                <input type="email" name="email" class="nl-email" placeholder="Your E-mail">
+                                <input type="submit" value="Subscribe">
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <!-- ##### Newsletter Area End ##### -->
+        <!-- ##### Footer Area Start ##### -->
+        <footer class="footer_area clearfix">
+            <div class="container">
+                <div class="row align-items-center">
+                    <!-- Single Widget Area -->
+                    <div class="col-12 col-lg-4">
+                        <div class="single_widget_area">
+                            <!-- Logo -->
+                            <div class="footer-logo mr-50">
+                                <a href="index.html"><img src="img/core-img/logo2.png" alt=""></a>
+                            </div>
+                            <!-- Copywrite Text -->
+                            <p class="copywrite">
+                                <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
+                                Copyright &copy;
+                                <script>document.write(new Date().getFullYear());</script> All rights reserved | This template is made with <i class="fa fa-heart-o" aria-hidden="true"></i> by <a href="https://colorlib.com" target="_blank">Colorlib</a> & Re-distributed by <a href="https://themewagon.com/" target="_blank">Themewagon</a>
+                                <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
+                            </p>
+                        </div>
+                    </div>
+                    <!-- Single Widget Area -->
+                    <div class="col-12 col-lg-8">
+                        <div class="single_widget_area">
+                            <!-- Footer Menu -->
+                            <div class="footer_menu">
+                                <nav class="navbar navbar-expand-lg justify-content-end">
+                                    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#footerNavContent" aria-controls="footerNavContent" aria-expanded="false" aria-label="Toggle navigation"><i class="fa fa-bars"></i></button>
+                                    <div class="collapse navbar-collapse" id="footerNavContent">
+                                        <ul class="navbar-nav ml-auto">
+                                            <li class="nav-item active">
+                                                <a class="nav-link" href="/home/index">Home</a>
+                                            </li>
+                                            <li class="nav-item">
+                                                <a class="nav-link" href="/product/shop">Shop</a>
+                                            </li>
+                                            <li class="nav-item">
+                                                <a class="nav-link" href="/cart/list">Cart</a>
+                                            </li>
+                                            @*<li class="nav-item">
+                                                    <a class="nav-link" href="/cart/checkout">Checkout</a>
+                                                </li>*@
+                                        </ul>
+                                    </div>
+                                </nav>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </footer>
+        <!-- ##### Footer Area End ##### -->
+        <!-- ##### jQuery (Necessary for All JavaScript Plugins) ##### -->
+        <script src="~/js/jquery-2.2.4.min.js"></script>
+        @*<script src="~/vendor/jquery-3.2.1.min.js"></script>*@
+        <script src="~/js/jquery.validate.min.js"></script>
+        <script src="~/js/jquery.validate.unobtrusive.min.js"></script>
+        <script src="~/vendor/popper.min.js"></script>
+        <script src="~/js/bootstrap.min.js"></script>
+        <script src="~/js/plugins.js"></script>
+        <script src="~/js/active.js"></script>
+
+    </body>
+
+</html>
+}
+
+
